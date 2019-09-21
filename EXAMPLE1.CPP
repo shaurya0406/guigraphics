@@ -495,7 +495,7 @@ enum BUTTON_STATUS
 	int Left,Top,Width,Height;
 	char Caption[50];
 	Button *CloseBtn;
-	void JCLogo();
+	void SSLogo();
 	public:
 	
 	Window(int left, int top, int width, int height, char caption[]);
@@ -514,7 +514,7 @@ enum BUTTON_STATUS
 		WindowWidth=Width;
 		strcpy(Caption,caption);
 	}
-	void Window::JCLogo()
+	void Window::SSLogo()
 	{
 		setcolor(3);
 		setfillstyle(SOLID_FILL,3);
@@ -550,7 +550,7 @@ enum BUTTON_STATUS
 		CloseBtn = new Button(Left+Width-TITLEBARHEIGHT-1, Top+2,TITLEBARHEIGHT-2, TITLEBARHEIGHT-2, "X", 9809);
 		CloseBtn->Draw();
 
-		JCLogo();
+		SSLogo();
 	
 	}
 	void Window::EnableClickHandler()
