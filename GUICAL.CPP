@@ -523,7 +523,7 @@ enum BUTTON_STATUS
 		setfillstyle(SOLID_FILL,15);
 		circle(Left+(BORDERWIDTH)+TITLEBARHEIGHT/2,Top+TITLEBARHEIGHT/2,TITLEBARHEIGHT/2-3);
 		settextstyle(SMALL_FONT,0,0);
-		outtextxy(Left+6,Top+4,"JC");
+		outtextxy(Left+6,Top+4,"SS");
 		settextstyle(0,0,0);
 	}
 	void Window::Draw()
