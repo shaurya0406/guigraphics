@@ -2,45 +2,48 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+enum bool{false,true};
 class CUSTOMER
 {
 	char Password[50];
 public:
 	char Username[50];
-	CUSTOMER(char *username,char *password);
-	//bool CheckPassword(char *password);
+	//CUSTOMER(char *user,char *pass);
+	int CheckPassword(char *password);
 
 };
-CUSTOMER::CUSTOMER(char username[],char password[])
-{
-	Username=username;
-	Password=password;
-}
-// CUSTOMER::CheckPassword(char *password)
+// CUSTOMER::CUSTOMER(char user[],char pass[])
 // {
-// 	if(password==Password)
-// 		return true;
-// 	else{
-// 		return false;
-// 	}
+// 	Username=user;
+// 	Password=pass;
 // }
+int CUSTOMER::CheckPassword(char *password)
+{
+	if(password==Password)
+		return 1;
+	else{
+		return 0;
+	}
+}
 void main()
 {
 	CUSTOMER Customer[20];
-	char username[50],password[50];
+	CUSTOMER Customer1;
+	char username[50],password[50],user[50];;
 	bool exists=false;
 	int i=0;
 	fstream fil;
 	fil.open("CUSTOMER.dat",ios::binary|ios::in|ios::out);
-	Customer[0]("Shaurya","lallu");
-	Customer[1]("Rishit","ghonchu");
-	fil.write((char *)&Customer,sizeof(Customer))
-	while(fil.read((char *)&Customer,sizeof(Customer)))
+    strcpy(Customer[0].Username,"Shaurya");
+	strcpy(Customer[1].Username,"Rishit");
+	fil.write((char *)&Customer,sizeof(Customer));
+	while(fil.read((char *)&Customer1,sizeof(Customer1)))
 	{
-		char *user=Customer.Username;
+		strcpy(user,Customer1.Username);
 		for(;i<strlen(user);i++)
 			username[i]=user[i];
-		username[i]=','
+		username[i]=',';
+
 
 	}
 	cout<<username;
@@ -61,6 +64,6 @@ void main()
 	// cout<<"enter password : ";
 	// gets(password);
 	// Customer[0](username,password);
-
-
+    fil.close();
+    getch();
 }
