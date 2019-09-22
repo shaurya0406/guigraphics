@@ -2769,7 +2769,33 @@ enum PICTURE_BUTTON_STATUS
 		}
 
 	}
+MsgBox msgbox;
+class CUSTOMER
+{
+	char Password[50];
+public:
+	char Username[50];
+	//CUSTOMER(char *user,char *pass);
+	void inputdata();
+	int CheckPassword(char *password);
 
+
+};
+int CUSTOMER::CheckPassword(char *password)
+{
+	if(strcmp(Password,password)==0)
+		return 1;
+	else{
+		return 0;
+	}
+}
+void CUSTOMER::inputdata()
+{
+	cout<<"enter username : ";
+	cin>>Username;
+	cout<<"Enter password : ";
+	cin>>Password;
+}
 Window *awelcome = new Window(10,10,630,480,"WELCOME");
 // Button *standard[5];
 // Button *bwelcome[2];
@@ -2778,6 +2804,7 @@ Button *next = new Button(500,400,100,30,"NEXT",2);
 
 
 void welcome();
+void Customerlogin();
 void AdminLogin()
 {
 	cleardevice();
@@ -2814,12 +2841,59 @@ void AdminLogin()
 	    }
 	} 
 }
+void CustomerHome()
+{
+	cleardevice();
+	Window *pAHome = new Window(10,10,630,480,"Now Playing");
+	Label *timings = new Label(175,80,90,130,"Movie 1",LEFT_TEXT,3);
+	Label *theatre = new Label(305,80,90,130,"Movie 2",LEFT_TEXT,4);
+	Label *food = new Label(175,250,90,130,"Movie 3",LEFT_TEXT,5);
+	Label *book = new Label(305,250,90,130,"Movie 4",LEFT_TEXT,6);
+	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
+	pAHome->Draw();
+	timings->Draw();
+	theatre->Draw();
+	food->Draw();
+	book->Draw();
+    back->Draw();
+    next->Draw();
+	// for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
+	mouse.ShowMouse(); // To show mouse
+	mouse.GetMouseStatus(); // To get position of mouse
+		awelcome->EnableClickHandler();
+		timings->EnableClickHandler(2,0,4,8);
+		theatre->EnableClickHandler(2,0,4,8);
+		food->EnableClickHandler(2,0,4,8);
+		book->EnableClickHandler(2,0,4,8);
+		back->EnableClickHandler();
+		next->EnableClickHandler();
+   //  	for(int i=1;i<=2;i++)
+			// bwelcome[i]->EnableClickHandler();
+		if(LabelId==3)//Timings
+			//welcome();
+		if(LabelId==4)//Details
+		//TheatreDetails();
+		if(LabelId==5)//Counter
+		//FoodCounter();
+		if(LabelId==6)//Book A Ticket
+		 //	Book();
+		if(ButtonId==1)
+			Customerlogin();
+
+    }
+	cleardevice();
+}
 void Customerlogin()
 {
 	cleardevice();
 	Window *pLogin = new Window(10,10,630,480,"CUSTOMER LOGIN");
-	ComboBox *pusername = new ComboBox(200,200,243,30,"USERNAME","Shaurya,Rishit ");
-	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,1);
+	TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,1);
+	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
 	pLogin->Draw();
     pusername->Draw();
     ppassword->Draw();
@@ -2828,9 +2902,10 @@ void Customerlogin()
 
     while(1)
 	{
+		CUSTOMER Customer;
 		mouse.ShowMouse(); // To show mouse
-        mouse.GetMouseStatus(); // To get position of mouse
-        pLogin->EnableClickHandler();
+	mouse.GetMouseStatus(); // To get position of mouse
+	pLogin->EnableClickHandler();
 		pusername->EnableClickHandler();
 		ppassword->EnableClickHandler();
 		ppassword->HideText(true);
@@ -2842,9 +2917,22 @@ void Customerlogin()
 		// }
 		if(ButtonId==1)
 	    {
-            welcome();
+	    welcome();
 	    }
-	} 
+	    if(ButtonId==2)
+	    {
+		fstream fil;
+		fil.open("customer.dat",ios::binary|ios::in|ios::out);
+		while(fil.read((char *)&Customer,sizeof(Customer)))
+		{
+			if(Customer.CheckPassword(ppassword->GetText()) && strcmp(Customer.Username,pusername->GetText())==0)
+			{
+				CustomerHome();
+			}
+		}
+		fil.close();
+	    }
+	}
 
 
 }
@@ -2856,30 +2944,40 @@ void welcome()
 	awelcome->Draw();
 	admin->Draw();
 	customer->Draw();
+
     // for(int i=1;i<=2;i++)
     // {
     // 	bwelcome[i]->Draw();
     // }
     while(1)
     {
-    	mouse.ShowMouse(); // To show mouse
-        mouse.GetMouseStatus(); // To get position of mouse
+	mouse.ShowMouse(); // To show mouse
+	mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
 		admin->EnableClickHandler();
 		customer->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)//Admin
-    		AdminLogin();
-    	if(ButtonId==4)//Customer
-    		Customerlogin();
+		AdminLogin();
+	if(ButtonId==4)//Customer
+		Customerlogin();
 
     }
 }
+
 void main()
 {
 	int gd = DETECT,gm,errorcode;
 	char ch;
+
+	CUSTOMER Customer;
+
+	fstream fil;
+	fil.open("customer.dat",ios::binary|ios::in|ios::out);
+	Customer.inputdata();
+	fil.write((char *)&Customer,sizeof(Customer));
+	fil.close();
 	initgraph(&gd,&gm,"c://tc//bgi");
 
 		// read result of initialization
