@@ -34,7 +34,6 @@ void main()
 	int i=0;
 	fstream fil;
 	fil.open("CUSTOMER.dat",ios::binary|ios::in|ios::out);
-    strcpy(Customer.Username,"Shaurya");
 	strcpy(Customer.Username,"Rishit");
 	fil.write((char *)&Customer,sizeof(Customer));
 	strcpy(Customer.Username,"Shaurya");
@@ -43,11 +42,13 @@ void main()
 	{
 		strcpy(user,Customer1.Username);
 		for(;i<strlen(user);i++)
-			username[i]=user[i];
+			{username[i]=user[i];}
 		username[i]=',';
 		i++;
+		cout<<Customer1.Username<<endl;
 
 	}
+	//username[i]='\o';
 	cout<<username;
 	// cout<<"enter username : ";
 	// gets(username);
