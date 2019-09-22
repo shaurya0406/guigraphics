@@ -27,15 +27,17 @@ int CUSTOMER::CheckPassword(char *password)
 }
 void main()
 {
-	CUSTOMER Customer[20];
+	CUSTOMER Customer;
 	CUSTOMER Customer1;
 	char username[50],password[50],user[50];;
 	bool exists=false;
 	int i=0;
 	fstream fil;
 	fil.open("CUSTOMER.dat",ios::binary|ios::in|ios::out);
-    strcpy(Customer[0].Username,"Shaurya");
-	strcpy(Customer[1].Username,"Rishit");
+    strcpy(Customer.Username,"Shaurya");
+	strcpy(Customer.Username,"Rishit");
+	fil.write((char *)&Customer,sizeof(Customer));
+	strcpy(Customer.Username,"Shaurya");
 	fil.write((char *)&Customer,sizeof(Customer));
 	while(fil.read((char *)&Customer1,sizeof(Customer1)))
 	{
@@ -43,7 +45,7 @@ void main()
 		for(;i<strlen(user);i++)
 			username[i]=user[i];
 		username[i]=',';
-
+		i++;
 
 	}
 	cout<<username;
