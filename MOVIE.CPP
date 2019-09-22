@@ -333,23 +333,25 @@ enum BUTTON_STATUS
 
 	int Alignment;
   	bool bReadOnly;
-
+    bool Hide;
 	int Left,Top,Width,Height,ID;
 	char Caption[50];
+	char HiddenText[50];
 	
 	void MouseDown();
 
 	public:
 	
-	TextBox(int left, int top, int width, int height, char caption[],int Align, int Id);
+	TextBox(int left, int top, int width, int height, char caption[],int Align,int Id);
 	void Draw();
 	void EnableClickHandler();
 	void SetReadOnly(bool ReadOnly);
+	void HideText(bool Hide);
 	void SetText(char text[]);
 	char *GetText();
 	void Clear();
   }; 	
-       TextBox::TextBox(int left, int top, int width, int height, char caption[],int Align, int Id)
+       TextBox::TextBox(int left, int top, int width, int height, char caption[],int Align,int Id)
     {
 	Left = left;
 	Top = top;
@@ -359,11 +361,16 @@ enum BUTTON_STATUS
 	ID = Id;
 	Alignment = Align;
 	bReadOnly = false;
+	int i;
+	    for(i=0;i<strlen(Caption);i++)
+		HiddenText[i] = '*';
+	    HiddenText[i]=0;
     }				
 
 
     void TextBox::Draw()
    {
+   	    
 		setfillstyle(SOLID_FILL,WHITE);
 		bar(Left,Top,Left+Width,Top+Height);
 
@@ -374,12 +381,26 @@ enum BUTTON_STATUS
 
 		settextjustify(Alignment,TOP_TEXT);
 		if(Alignment==LEFT_TEXT)
-			outtextxy(Left+2,Top+1+((Height/2)-(textheight(Caption)/2)),Caption);
+			{
+				if(Hide == true){
+                   
+                   outtextxy(Left+2,Top+1+((Height/2)-(textheight(Caption)/2)),HiddenText);
+				}	
+				else{outtextxy(Left+2,Top+1+((Height/2)-(textheight(Caption)/2)),Caption);}
+			}
 		else
 			if(Alignment==RIGHT_TEXT)
-				outtextxy(Left+Width-2,Top+1+((Height/2)-(textheight(Caption)/2)),Caption);
+				if(Hide==true){
+                   
+                   outtextxy(Left+Width-2,Top+1+((Height/2)-(textheight(Caption)/2)),HiddenText);
+				}
+				else{outtextxy(Left+Width-2,Top+1+((Height/2)-(textheight(Caption)/2)),Caption);}
 		else
-			outtextxy(Left+(Width/2),Top+1+((Height/2)-(textheight(Caption)/2)),Caption);
+			if(Hide==true){
+                   
+                   outtextxy(Left+(Width/2),Top+1+((Height/2)-(textheight(Caption)/2)),HiddenText);
+			}
+			else{outtextxy(Left+(Width/2),Top+1+((Height/2)-(textheight(Caption)/2)),Caption);}
 			
 	
    }
@@ -419,6 +440,7 @@ enum BUTTON_STATUS
 					if(len>0)
 					{
 						Caption[curpos-1]=0;
+						HiddenText[curpos-1]=0;						
 						curpos--;
 						len--;
 					}
@@ -427,10 +449,13 @@ enum BUTTON_STATUS
 			if(isprint(ch))
 			{
 				Caption[curpos]=ch;
+				HiddenText[curpos]='*';
 				Caption[curpos+1]=0;
+				HiddenText[curpos+1]=0;
 				if(Left+textwidth(Caption)>Left+Width)
 				{
 					Caption[curpos]=0;
+					HiddenText[curpos]=0;
 					Draw();
 					break;
 				}
@@ -451,7 +476,10 @@ enum BUTTON_STATUS
 	{
 		bReadOnly = ReadOnly;
 	}
-	
+	void TextBox::HideText(bool hide)
+	{
+		Hide = hide;
+	}
 	void TextBox::SetText(char text[])
 	{
 		if (Left + textwidth(Caption) <= Left + Width - textwidth(" "))
@@ -2742,6 +2770,112 @@ enum PICTURE_BUTTON_STATUS
 
 	}
 
+Window *awelcome = new Window(10,10,630,480,"WELCOME");
+// Button *standard[5];
+// Button *bwelcome[2];
+Button *back = new Button(20,400,100,30,"BACK",1);
+Button *next = new Button(500,400,100,30,"NEXT",2);
+
+
+void welcome();
+void AdminLogin()
+{
+	cleardevice();
+	Window *pLogin = new Window(10,10,630,480,"ADMIN LOGIN");
+	ComboBox *pusername = new ComboBox(200,200,243,30,"USERNAME","Shaurya,Rishit ");
+	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,1);
+	pLogin->Draw();
+    pusername->Draw();
+    ppassword->Draw();
+    back->Draw();
+    next->Draw();
+
+	// for(int i=1;i<=2;i++)
+	// {
+	// 	standard[i]->Draw();
+	// }
+	while(1)
+	{
+		mouse.ShowMouse(); // To show mouse
+        mouse.GetMouseStatus(); // To get position of mouse
+        pLogin->EnableClickHandler();
+		pusername->EnableClickHandler();
+		ppassword->EnableClickHandler();
+		ppassword->HideText(true);
+		back->EnableClickHandler();
+		next->EnableClickHandler();
+		// for(int i=1;i<=2;i++)
+		// {
+		// 	standard[i]->EnableClickHandler();
+		// }
+		if(ButtonId==1)
+	    {
+            welcome();
+	    }
+	} 
+}
+void Customerlogin()
+{
+	cleardevice();
+	Window *pLogin = new Window(10,10,630,480,"CUSTOMER LOGIN");
+	ComboBox *pusername = new ComboBox(200,200,243,30,"USERNAME","Shaurya,Rishit ");
+	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,1);
+	pLogin->Draw();
+    pusername->Draw();
+    ppassword->Draw();
+    back->Draw();
+    next->Draw();
+
+    while(1)
+	{
+		mouse.ShowMouse(); // To show mouse
+        mouse.GetMouseStatus(); // To get position of mouse
+        pLogin->EnableClickHandler();
+		pusername->EnableClickHandler();
+		ppassword->EnableClickHandler();
+		ppassword->HideText(true);
+		back->EnableClickHandler();
+		next->EnableClickHandler();
+		// for(int i=1;i<=2;i++)
+		// {
+		// 	standard[i]->EnableClickHandler();
+		// }
+		if(ButtonId==1)
+	    {
+            welcome();
+	    }
+	} 
+
+
+}
+void welcome()
+{
+	cleardevice();
+	Button *admin = new Button(200,200,243,30,"ADMIN",3);
+	Button *customer = new Button(200,240,243,30,"CUSTOMER",4);
+	awelcome->Draw();
+	admin->Draw();
+	customer->Draw();
+    // for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
+    	mouse.ShowMouse(); // To show mouse
+        mouse.GetMouseStatus(); // To get position of mouse
+		awelcome->EnableClickHandler();
+		admin->EnableClickHandler();
+		customer->EnableClickHandler();
+   //  	for(int i=1;i<=2;i++)
+			// bwelcome[i]->EnableClickHandler();
+		if(ButtonId==3)//Admin
+    		AdminLogin();
+    	if(ButtonId==4)//Customer
+    		Customerlogin();
+
+    }
+}
 void main()
 {
 	int gd = DETECT,gm,errorcode;
@@ -2758,39 +2892,12 @@ void main()
 			getch();
 			exit(1);// terminate with an error code
 		}
-	mouse.InstallMouse();
-	mouse.SetMousePosi(600,400);
-	Window *pwelcome = new Window(10,10,630,480,"WELCOME");
-	pwelcome->Draw();
 
-
-    Label *padmin = new Label(200,200,243,30,"Admin",LEFT_TEXT,LIGHTGRAY,BLACK,1);
-    padmin->Draw();
-    Label *pcustomer = new Label(200,240,243,30,"CUSTOMER",LEFT_TEXT,LIGHTGRAY,BLACK,2);
-    pcustomer->Draw();
-    Button *pnext = new Button(200,270,243,30,"NEXT",1);
-    pnext->Draw();
 
     while(true)
     {
-
-		 mouse.ShowMouse(); // To show mouse
-		 mouse.GetMouseStatus(); // To get position of mouse
-
-		// Enabling click event on close button in window
-		pwelcome->EnableClickHandler();
-		padmin->EnableClickHandler();
-		pcustomer->EnableClickHandler();
-		pnext->EnableClickHandler();
-		  if(ButtonId==1)
-		  {
-		    delete padmin;
-		    ComboBox *pusername = new ComboBox(200,200,243,30,"Username","Shaurya,Rishit ");
-		    pusername->Draw();
-		    pusername->EnableClickHandler();
-		    pusername->GetText();
-		  }
-
+    	welcome();
+        
 
 		while(kbhit())
 		{
