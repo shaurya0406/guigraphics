@@ -222,7 +222,7 @@ enum BUTTON_STATUS
 
     void Button::Draw()
    {
-	setfillstyle(SOLID_FILL,LIGHTGRAY);
+	setfillstyle(SOLID_FILL,BLACK);
 	bar(Left,Top,Left+Width,Top+Height);
 
 	setcolor(WHITE);
@@ -234,7 +234,7 @@ enum BUTTON_STATUS
 	line(Left,Top+Height,Left+Width,Top+Height);
 
 	settextjustify(LEFT_TEXT,TOP_TEXT);
-	setcolor(BLACK);
+	setcolor(YELLOW);
 	outtextxy(Left + (Width/2) - textwidth(Caption)/2 + 1,
 	Top + (Height/2) - textheight(Caption)/2 + 1, Caption);
 	
@@ -371,13 +371,13 @@ enum BUTTON_STATUS
     void TextBox::Draw()
    {
    	    
-		setfillstyle(SOLID_FILL,WHITE);
+		setfillstyle(SOLID_FILL,BLACK);
 		bar(Left,Top,Left+Width,Top+Height);
 
 		setcolor(DARKGRAY);
 		rectangle(Left,Top,Left+Width,Top+Height);
 
-		setcolor(BLACK);
+		setcolor(RED);
 
 		settextjustify(Alignment,TOP_TEXT);
 		if(Alignment==LEFT_TEXT)
@@ -497,6 +497,7 @@ enum BUTTON_STATUS
 	void TextBox::Clear()
 	{
 		strcpy(Caption,"");
+		strcpy(HiddenText,"");
 		Draw();
 	}
 
@@ -509,8 +510,9 @@ enum BUTTON_STATUS
 
 			if(mouse.GetButton() == MOUSE_LBUTTON)
 			{
-			MouseDown();
-			TextBoxId = ID;
+				Clear();
+				MouseDown();
+				TextBoxId = ID;
 			}
 		}
  
@@ -557,7 +559,7 @@ enum BUTTON_STATUS
 	void Window::Draw()
 	{
 	
-		setfillstyle(SOLID_FILL,LIGHTGRAY);
+		setfillstyle(SOLID_FILL,RED);
 		bar(Left,Top,Left+Width,Top+Height);
 
 		setcolor(WHITE);
@@ -2186,7 +2188,7 @@ enum PICTURE_BUTTON_STATUS
 	Button *MsgCloseBtn;
 	Button *MsgBtn[3];
 	TextBox *pInputBox;
-	void JCLogo();
+	void SSLogo();
 	void CriticalIcon(int left, int top);
 	void QuestionIcon(int left, int top);			
 	void ExclamationIcon(int left, int top);
@@ -2259,7 +2261,7 @@ enum PICTURE_BUTTON_STATUS
 		circle(left+(ICONWIDTH)/2,top+(ICONHEIGHT)/2,ICONWIDTH-8);
 		circle(left+(ICONWIDTH)/2,top+(ICONHEIGHT)/2,ICONWIDTH-9);
 		settextstyle(0,0,0);
-		outtextxy(left+(ICONWIDTH/2)-7,top+2+((ICONHEIGHT/2)-(textheight("JC")/2)),"JC");
+		outtextxy(left+(ICONWIDTH/2)-7,top+2+((ICONHEIGHT/2)-(textheight("SS")/2)),"SS");
 
 	}
 
@@ -2330,7 +2332,7 @@ enum PICTURE_BUTTON_STATUS
 
 	}
 
-	void MsgBox::JCLogo()
+	void MsgBox::SSLogo()
 	{
 		
 		setcolor(3);
@@ -2340,7 +2342,7 @@ enum PICTURE_BUTTON_STATUS
 		setfillstyle(SOLID_FILL,15);
 		circle(Left+(BORDERWIDTH)+TITLEBARHEIGHT/2,Top+TITLEBARHEIGHT/2,TITLEBARHEIGHT/2-3);
 		settextstyle(SMALL_FONT,0,0);
-		outtextxy(Left+6,Top+4,"JC");
+		outtextxy(Left+6,Top+4,"SS");
 		settextstyle(0,0,0);
 	}
 	int MsgBox::MessageBox(int left=200, int top=200, char *title="Confirm", char *msgtext="Confirm", int fontColor=BLACK, int btntype=jcOKOnly , int icon=jcNone)
@@ -2534,7 +2536,7 @@ enum PICTURE_BUTTON_STATUS
 			totalButtons=1;
 		}
 		settextstyle(0,0,0);
-		JCLogo();
+		SSLogo();
 		
 		mouse.ShowMouse();
 
@@ -2705,7 +2707,7 @@ enum PICTURE_BUTTON_STATUS
 		MsgBtn[1]->Draw();
 			
 		settextstyle(0,0,0);
-		JCLogo();
+		SSLogo();
 		
 		mouse.ShowMouse();
 
@@ -2805,6 +2807,22 @@ Button *next = new Button(500,400,100,30,"NEXT",2);
 
 void welcome();
 void Customerlogin();
+void Timings()
+{
+
+}
+void TheatreDetails()
+{
+
+}
+void FoodCounter()
+{
+
+}
+void Book()
+{
+
+}
 void AdminLogin()
 {
 	cleardevice();
@@ -2875,18 +2893,18 @@ void CustomerHome()
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
 		if(LabelId==3)//Timings
-			//welcome();
-		if(LabelId==4)//Details
-		//TheatreDetails();
-		if(LabelId==5)//Counter
-		//FoodCounter();
-		if(LabelId==6)//Book A Ticket
-		 //	Book();
-		if(ButtonId==1)
+			Timings();
+		else if(LabelId==4)//Details
+			TheatreDetails();
+		else if(LabelId==5)//Counter
+			FoodCounter();
+		else if(LabelId==6)//Book A Ticket
+		 	Book();
+		else if(ButtonId==1)
 			Customerlogin();
+		else{}
 
     }
-	cleardevice();
 }
 void Customerlogin()
 {
@@ -2928,6 +2946,13 @@ void Customerlogin()
 			if(Customer.CheckPassword(ppassword->GetText()) && strcmp(Customer.Username,pusername->GetText())==0)
 			{
 				CustomerHome();
+			}
+			else
+			{
+			   	int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",GREEN,jcRetryCancel,jcCritical);
+			   	if(msgBtn=jcRetry)
+			   		Customerlogin();
+			   	else{welcome();}
 			}
 		}
 		fil.close();
