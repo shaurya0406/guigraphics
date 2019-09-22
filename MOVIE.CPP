@@ -2863,10 +2863,10 @@ void CustomerHome()
 {
 	cleardevice();
 	Window *pAHome = new Window(10,10,630,480,"Now Playing");
-	Label *timings = new Label(175,80,90,130,"Movie 1",LEFT_TEXT,3);
-	Label *theatre = new Label(305,80,90,130,"Movie 2",LEFT_TEXT,4);
-	Label *food = new Label(175,250,90,130,"Movie 3",LEFT_TEXT,5);
-	Label *book = new Label(305,250,90,130,"Movie 4",LEFT_TEXT,6);
+	Label *timings = new Label(175,80,90,130,"Movie 1",CENTER_TEXT,3);
+	Label *theatre = new Label(305,80,90,130,"Movie 2",CENTER_TEXT,4);
+	Label *food = new Label(175,250,90,130,"Movie 3",CENTER_TEXT,5);
+	Label *book = new Label(305,250,90,130,"Movie 4",CENTER_TEXT,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pAHome->Draw();
 	timings->Draw();
@@ -2884,10 +2884,10 @@ void CustomerHome()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
-		timings->EnableClickHandler(2,0,4,8);
-		theatre->EnableClickHandler(2,0,4,8);
-		food->EnableClickHandler(2,0,4,8);
-		book->EnableClickHandler(2,0,4,8);
+		timings->EnableClickHandler(2,0,15,8);
+		theatre->EnableClickHandler(2,0,15,8);
+		food->EnableClickHandler(2,0,15,8);
+		book->EnableClickHandler(2,0,15,8);
 		back->EnableClickHandler();
 		next->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
@@ -3003,7 +3003,7 @@ void main()
 	Customer.inputdata();
 	fil.write((char *)&Customer,sizeof(Customer));
 	fil.close();
-	initgraph(&gd,&gm,"c://tc//bgi");
+	initgraph(&gd,&gm,"c://turboc3//bgi");
 
 		// read result of initialization
 		errorcode = graphresult();
