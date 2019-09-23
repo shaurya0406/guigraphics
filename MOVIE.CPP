@@ -2778,7 +2778,7 @@ class CUSTOMER
 public:
 	char Username[50];
 	//CUSTOMER(char *user,char *pass);
-	void inputdata();
+	void inputdata(char *username,char *password);
 	int CheckPassword(char *password);
 
 
@@ -2791,19 +2791,18 @@ int CUSTOMER::CheckPassword(char *password)
 		return 0;
 	}
 }
-void CUSTOMER::inputdata()
+void CUSTOMER::inputdata(char *username,char *password)
 {
-	cout<<"enter username : ";
-	cin>>Username;
-	cout<<"Enter password : ";
-	cin>>Password;
+	strcpy(Username,username);
+	strcpy(Password,password);
 }
 Window *awelcome = new Window(10,10,630,480,"WELCOME");
 // Button *standard[5];
 // Button *bwelcome[2];
 Button *back = new Button(20,400,100,30,"BACK",1);
 Button *next = new Button(500,400,100,30,"NEXT",2);
-
+TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,1);
+TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
 
 void welcome();
 void Customerlogin();
@@ -2827,8 +2826,6 @@ void AdminLogin()
 {
 	cleardevice();
 	Window *pLogin = new Window(10,10,630,480,"ADMIN LOGIN");
-	ComboBox *pusername = new ComboBox(200,200,243,30,"USERNAME","Shaurya,Rishit ");
-	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,1);
 	pLogin->Draw();
     pusername->Draw();
     ppassword->Draw();
@@ -2863,10 +2860,10 @@ void CustomerHome()
 {
 	cleardevice();
 	Window *pAHome = new Window(10,10,630,480,"Now Playing");
-	Label *timings = new Label(175,80,90,130,"Movie 1",LEFT_TEXT,3);
-	Label *theatre = new Label(305,80,90,130,"Movie 2",LEFT_TEXT,4);
-	Label *food = new Label(175,250,90,130,"Movie 3",LEFT_TEXT,5);
-	Label *book = new Label(305,250,90,130,"Movie 4",LEFT_TEXT,6);
+	Label *timings = new Label(175,80,90,130,"Movie 1",CENTER_TEXT,3);
+	Label *theatre = new Label(305,80,90,130,"Movie 2",CENTER_TEXT,4);
+	Label *food = new Label(175,250,90,130,"Movie 3",CENTER_TEXT,5);
+	Label *book = new Label(305,250,90,130,"Movie 4",CENTER_TEXT,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pAHome->Draw();
 	timings->Draw();
@@ -2906,15 +2903,54 @@ void CustomerHome()
 
     }
 }
+void CustomerSignUp()
+{
+	cleardevice();
+	Window *pSignUpWindow = new Window(10,10,630,480,"CUSTOMER SIGN UP");
+	pSignUpWindow->Draw();
+	pusername->Draw();
+    ppassword->Draw();
+    back->Draw();
+    next->Draw();
+    while(1)
+    {
+    	CUSTOMER Customer;
+		mouse.ShowMouse(); // To show mouse
+		mouse.GetMouseStatus(); // To get position of mouse
+		pSignUpWindow->EnableClickHandler();
+		pusername->EnableClickHandler();
+		ppassword->EnableClickHandler();
+		ppassword->HideText(true);
+		back->EnableClickHandler();
+		next->EnableClickHandler();
+
+		if(ButtonId==1)
+		{
+			Customerlogin();
+		}
+		if(ButtonId==2)
+		{
+			Customer.inputdata(pusername->GetText(),ppassword->GetText());
+			fstream fil;
+			fil.open("customer.dat",ios::binary|ios::out);
+			fil.close();
+			fil.open("customer.dat",ios::binary|ios::app);
+			fil.close();
+			fil.write((char *)&Customer,sizeof(Customer));
+			fil.close();
+			Customerlogin();
+		}
+    }
+}
 void Customerlogin()
 {
 	cleardevice();
 	Window *pLogin = new Window(10,10,630,480,"CUSTOMER LOGIN");
-	TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,1);
-	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
+	Button *pCustomerSignUp = new Button(200,400,243,30,"New Here, SIGN UP",5);
 	pLogin->Draw();
     pusername->Draw();
     ppassword->Draw();
+    pCustomerSignUp->Draw();
     back->Draw();
     next->Draw();
 
@@ -2927,6 +2963,7 @@ void Customerlogin()
 		pusername->EnableClickHandler();
 		ppassword->EnableClickHandler();
 		ppassword->HideText(true);
+		pCustomerSignUp->EnableClickHandler();
 		back->EnableClickHandler();
 		next->EnableClickHandler();
 		// for(int i=1;i<=2;i++)
@@ -2939,23 +2976,31 @@ void Customerlogin()
 	    }
 	    if(ButtonId==2)
 	    {
-		fstream fil;
-		fil.open("customer.dat",ios::binary|ios::in|ios::out);
-		while(fil.read((char *)&Customer,sizeof(Customer)))
-		{
-			if(Customer.CheckPassword(ppassword->GetText()) && strcmp(Customer.Username,pusername->GetText())==0)
+			fstream fil;
+			fil.open("customer.dat",ios::binary|ios::in);
+			fil.seekg(0,ios::beg);
+			while(fil.read((char *)&Customer,sizeof(Customer)))
 			{
-				CustomerHome();
+				if(Customer.CheckPassword(ppassword->GetText()) && strcmp(Customer.Username,pusername->GetText())==0)
+				{
+					//fil.close();
+					CustomerHome();
+				}
+				else
+				{
+			   		int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",GREEN,jcRetryCancel,jcCritical);
+			   		if(msgBtn=jcRetry){
+			   			Customerlogin();
+			   			//fil.close();
+			   		}
+			   		else{welcome();}
+				}
 			}
-			else
-			{
-			   	int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",GREEN,jcRetryCancel,jcCritical);
-			   	if(msgBtn=jcRetry)
-			   		Customerlogin();
-			   	else{welcome();}
-			}
-		}
-		fil.close();
+			fil.close();
+	    }
+	    if(ButtonId==5)
+	    {
+	    	CustomerSignUp();
 	    }
 	}
 
@@ -2995,14 +3040,6 @@ void main()
 {
 	int gd = DETECT,gm,errorcode;
 	char ch;
-
-	CUSTOMER Customer;
-
-	fstream fil;
-	fil.open("customer.dat",ios::binary|ios::in|ios::out);
-	Customer.inputdata();
-	fil.write((char *)&Customer,sizeof(Customer));
-	fil.close();
 	initgraph(&gd,&gm,"c://tc//bgi");
 
 		// read result of initialization
