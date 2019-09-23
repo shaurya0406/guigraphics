@@ -2772,6 +2772,13 @@ enum PICTURE_BUTTON_STATUS
 
 	}
 MsgBox msgbox;
+struct MOVIE
+{
+	char MovieName[50];
+	int Timing;
+	float Price;
+
+};
 class CUSTOMER
 {
 	char Password[50];
@@ -2806,6 +2813,24 @@ TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
 
 void welcome();
 void Customerlogin();
+int CheckFile(char *username,char *password=" ")
+{
+	CUSTOMER Customer;
+	fstream fil;
+	int exists=0;
+	fil.open("customer.dat",ios::binary|ios::in);
+	while(fil.read((char *)&Customer,sizeof(Customer)))
+	{
+		if(strcmp(Customer.Username,username)==0 && Customer.CheckPassword(password))
+			exists=1;
+		else if(strcmp(Customer.Username,username)==0)
+			exists=2;
+		
+	}
+
+	fil.close();
+	return exists;
+}
 void Timings()
 {
 
@@ -2859,17 +2884,18 @@ void AdminLogin()
 void CustomerHome()
 {
 	cleardevice();
+	MOVIE Movie;
 	Window *pAHome = new Window(10,10,630,480,"Now Playing");
-	Label *timings = new Label(175,80,90,130,"Movie 1",CENTER_TEXT,3);
-	Label *theatre = new Label(305,80,90,130,"Movie 2",CENTER_TEXT,4);
-	Label *food = new Label(175,250,90,130,"Movie 3",CENTER_TEXT,5);
-	Label *book = new Label(305,250,90,130,"Movie 4",CENTER_TEXT,6);
+	Label *m1 = new Label(175,80,90,130,"Movie 1",CENTER_TEXT,3);
+	Label *m2 = new Label(305,80,90,130,"Movie 2",CENTER_TEXT,4);
+	Label *m3 = new Label(175,250,90,130,"Movie 3",CENTER_TEXT,5);
+	Label *m4 = new Label(305,250,90,130,"Movie 4",CENTER_TEXT,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pAHome->Draw();
-	timings->Draw();
-	theatre->Draw();
-	food->Draw();
-	book->Draw();
+	m1->Draw();
+	m2->Draw();
+	m3->Draw();
+	m4->Draw();
     back->Draw();
     next->Draw();
 	// for(int i=1;i<=2;i++)
@@ -2881,22 +2907,22 @@ void CustomerHome()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
-		timings->EnableClickHandler(2,0,4,8);
-		theatre->EnableClickHandler(2,0,4,8);
-		food->EnableClickHandler(2,0,4,8);
-		book->EnableClickHandler(2,0,4,8);
+		m1->EnableClickHandler(2,0,4,8);
+		m2->EnableClickHandler(2,0,4,8);
+		m3->EnableClickHandler(2,0,4,8);
+		m4->EnableClickHandler(2,0,4,8);
 		back->EnableClickHandler();
 		next->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
 		if(LabelId==3)//Timings
-			Timings();
+			strcpy(Movie.MovieName,m1.GetText());
 		else if(LabelId==4)//Details
-			TheatreDetails();
+			strcpy(Movie.MovieName,m2.GetText());
 		else if(LabelId==5)//Counter
-			FoodCounter();
+			strcpy(Movie.MovieName,m3.GetText());
 		else if(LabelId==6)//Book A Ticket
-		 	Book();
+			strcpy(Movie.MovieName,m4.GetText());
 		else if(ButtonId==1)
 			Customerlogin();
 		else{}
@@ -2914,7 +2940,7 @@ void CustomerSignUp()
     next->Draw();
     while(1)
     {
-    	CUSTOMER Customer;
+	CUSTOMER Customer;
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
 		pSignUpWindow->EnableClickHandler();
@@ -2931,14 +2957,24 @@ void CustomerSignUp()
 		if(ButtonId==2)
 		{
 			Customer.inputdata(pusername->GetText(),ppassword->GetText());
-			fstream fil;
-			fil.open("customer.dat",ios::binary|ios::out);
-			fil.close();
-			fil.open("customer.dat",ios::binary|ios::app);
-			fil.close();
-			fil.write((char *)&Customer,sizeof(Customer));
-			fil.close();
-			Customerlogin();
+			if(CheckFile(pusername->GetText())==2)
+			{
+				int msgBtn = msgbox.MessageBox(200,200,"New","User Exists. Please Login!",BLUE,jcOKOnly,jcCritical);
+					if(msgBtn=jcOK)
+					{
+						Customerlogin();
+						//fil.close();
+					}
+			}
+			else
+			{
+				fstream fil;
+				fil.open("customer.dat",ios::binary|ios::app);
+				fil.write((char *)&Customer,sizeof(Customer));
+				fil.close();
+				Customerlogin();
+			}
+			
 		}
     }
 }
@@ -2976,31 +3012,21 @@ void Customerlogin()
 	    }
 	    if(ButtonId==2)
 	    {
-			fstream fil;
-			fil.open("customer.dat",ios::binary|ios::in);
-			fil.seekg(0,ios::beg);
-			while(fil.read((char *)&Customer,sizeof(Customer)))
+			if(CheckFile(pusername->GetText(),ppassword->GetText()))
+				CustomerHome();
+			else
 			{
-				if(Customer.CheckPassword(ppassword->GetText()) && strcmp(Customer.Username,pusername->GetText())==0)
-				{
-					//fil.close();
-					CustomerHome();
-				}
-				else
-				{
-			   		int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",GREEN,jcRetryCancel,jcCritical);
-			   		if(msgBtn=jcRetry){
-			   			Customerlogin();
-			   			//fil.close();
-			   		}
-			   		else{welcome();}
-				}
+				int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",BLUE,jcRetryCancel,jcCritical);
+					if(msgBtn=jcRetry){
+						Customerlogin();
+						//fil.close();
+					}
 			}
-			fil.close();
+			
 	    }
 	    if(ButtonId==5)
 	    {
-	    	CustomerSignUp();
+		CustomerSignUp();
 	    }
 	}
 
@@ -3038,9 +3064,10 @@ void welcome()
 
 void main()
 {
+	clrscr();
 	int gd = DETECT,gm,errorcode;
 	char ch;
-	initgraph(&gd,&gm,"c://tc//bgi");
+	initgraph(&gd,&gm,"C:\\bgi");
 
 		// read result of initialization
 		errorcode = graphresult();
@@ -3056,8 +3083,8 @@ void main()
 
     while(true)
     {
-    	welcome();
-        
+	welcome();
+
 
 		while(kbhit())
 		{
