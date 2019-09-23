@@ -2881,10 +2881,10 @@ void CustomerHome()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
-		timings->EnableClickHandler(2,0,4,8);
-		theatre->EnableClickHandler(2,0,4,8);
-		food->EnableClickHandler(2,0,4,8);
-		book->EnableClickHandler(2,0,4,8);
+		timings->EnableClickHandler(2,0,15,8);
+		theatre->EnableClickHandler(2,0,15,8);
+		food->EnableClickHandler(2,0,15,8);
+		book->EnableClickHandler(2,0,15,8);
 		back->EnableClickHandler();
 		next->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
@@ -3040,7 +3040,19 @@ void main()
 {
 	int gd = DETECT,gm,errorcode;
 	char ch;
+<<<<<<< HEAD
 	initgraph(&gd,&gm,"c://tc//bgi");
+=======
+
+	CUSTOMER Customer;
+
+	fstream fil;
+	fil.open("customer.dat",ios::binary|ios::in|ios::out);
+	Customer.inputdata();
+	fil.write((char *)&Customer,sizeof(Customer));
+	fil.close();
+	initgraph(&gd,&gm,"c://turboc3//bgi");
+>>>>>>> e3c23e3deeb5a5d11d8f7debfa5db4e9bdea422f
 
 		// read result of initialization
 		errorcode = graphresult();
