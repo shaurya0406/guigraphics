@@ -91,6 +91,85 @@ void Book()
 {
 
 }
+void AdminHome()
+{
+	cleardevice();
+	Window *pAHome = new Window(10,10,630,480,"Admin Home");
+	Button *t1 = new Button(75,80,100,130,"1",3);
+	Button *t2 = new Button(205,80,100,130,"2",4);
+	Button *t3 = new Button(335,80,100,130,"3",5);
+	Button *t4 = new Button(465,80,100,130,"4",6);
+	Button *t5 = new Button(75,250,100,130,"5",7);
+	Button *t6 = new Button(205,250,100,130,"6",8);
+	Button *t7 = new Button(335,250,100,130,"7",9);
+	Button *t8 = new Button(465,250,100,130,"8",10);
+	Button *t9 = new Button(510,420,100,30,"Sign Out",11);
+
+	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
+	pAHome->Draw();
+	t1->Draw();
+	t2->Draw();
+	t3->Draw();
+	t4->Draw();
+	t5->Draw();
+	t6->Draw();
+	t7->Draw();
+	t8->Draw();
+	t9->Draw();
+	// for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
+		int Chk=LoginStatus;
+		mouse.ShowMouse(); // To show mouse
+		mouse.GetMouseStatus(); // To get position of mouse
+		awelcome->EnableClickHandler();
+		t1->EnableClickHandler();
+		t2->EnableClickHandler();
+		t3->EnableClickHandler();
+		t4->EnableClickHandler();
+		t5->EnableClickHandler();
+		t6->EnableClickHandler();
+		t7->EnableClickHandler();
+		t8->EnableClickHandler();
+		t9->EnableClickHandler();
+   //  	for(int i=1;i<=2;i++)
+			// bwelcome[i]->EnableClickHandler();
+	       /*	if(ButtonId==1)
+			CustomerHome();
+		else if(ButtonId==3&&Chk==1)
+			strcpy(Movie.Timing,t1->GetText());
+		else if(ButtonId==4&&Chk==1)
+			strcpy(Movie.Timing,t2->GetText());
+		else if(ButtonId==5&&Chk==1)
+			strcpy(Movie.Timing,t3->GetText());
+		else if(ButtonId==6&&Chk==1)
+			strcpy(Movie.Timing,t4->GetText());
+		else if(ButtonId==7&&Chk==1)
+			strcpy(Movie.Timing,t5->GetText());
+		else if(ButtonId==8&&Chk==1)
+			strcpy(Movie.Timing,t6->GetText());
+		else if(ButtonId==9&&Chk==1)
+			strcpy(Movie.Timing,t7->GetText());
+		else if(ButtonId==10&&Chk==1)
+			strcpy(Movie.Timing,t8->GetText());
+		else if(ButtonId==3||ButtonId==4||ButtonId==5||ButtonId==6||ButtonId==7||ButtonId==8||ButtonId==9||ButtonId==10&&Chk==0)
+		{
+
+			int msgBtn = msgbox.MessageBox(200,200,"Credentials Needed","Please Login to Proceed",BLUE,jcOKOnly,jcCritical);
+			if(msgBtn=jcOK)
+			{
+				Customerlogin();
+			}
+
+		}*/
+
+		}
+
+}
+
 void AdminLogin()
 {
 	cleardevice();
@@ -125,6 +204,8 @@ void AdminLogin()
 	    {
 	    welcome();
 	    }
+	    else if(ButtonId==2)
+		AdminHome();
 	}
 }
 void CustomerHome()
