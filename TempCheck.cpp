@@ -1,4 +1,17 @@
 #include <gui.h>
+void welcome();
+void Customerlogin();
+void CustomerSignUp();
+void CustomerTime();
+void CustomerHome();
+void AdminLogin();
+void AdminSignUp();
+void AdminHome();
+void del()
+{}
+int CheckFile(char *username,char *password);
+int AdminCheckID(char *username,char *password);
+
 class MOVIE
 {
 	public:
@@ -22,6 +35,34 @@ public:
 
 
 };
+class ADMIN
+{
+	char Password[50];
+public:
+	char Username[50];
+	char Name[50], EMail[25];
+	char Phone[10];
+	void inputdata(char *name, char *username,char *password, char *email, char *phone);
+	int CheckPassword(char *password);
+
+
+};
+int ADMIN::CheckPassword(char *password)
+{
+	if(strcmp(Password,password)==0)
+		return 1;
+	else{
+		return 0;
+	}
+}
+void ADMIN::inputdata(char *name, char *username,char *password, char *email, char *phone)
+{
+	strcpy(Name,name);
+	strcpy(Username,username);
+	strcpy(Password,password);
+	strcpy(EMail,email);
+	strcpy(Phone,phone);
+}
 int CUSTOMER::CheckPassword(char *password)
 {
 	if(strcmp(Password,password)==0)
@@ -38,25 +79,29 @@ void CUSTOMER::inputdata(char *name, char *username,char *password, char *email,
 	strcpy(EMail,email);
 	strcpy(Phone,phone);
 }
+
 Window *awelcome = new Window(10,10,630,480,"WELCOME");
-// Button *standard[5];
-// Button *bwelcome[2];
 Button *back = new Button(20,400,100,30,"BACK",1);
 Button *next = new Button(500,400,100,30,"NEXT",2);
-//TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,1);
-//TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
 int LoginStatus=0;
-void Customerlogin();
-/*int CheckLoginStatus()
+
+
+int AdminCheckID(char *username,char *password=" ")
 {
-	if(LoginStatus==0)
-		return 0;
-	else
-		return 1;
-}*/
-void welcome();
-void Customerlogin();
-void CustomerTime();
+	ADMIN Admin;
+	fstream fil;
+	int exists=0;
+	fil.open("admin.dat",ios::binary|ios::in);
+	while(fil.read((char *)&Admin,sizeof(Admin)))
+	{
+		if(strcmp(Admin.Username,username)==0&&Admin.CheckPassword(password))
+			exists=1;
+
+	}
+	fil.close();
+	return exists;
+}
+
 int CheckFile(char *username,char *password=" ")
 {
 	CUSTOMER Customer;
@@ -75,35 +120,19 @@ int CheckFile(char *username,char *password=" ")
 	fil.close();
 	return exists;
 }
-void Timings()
-{
-
-}
-void TheatreDetails()
-{
-
-}
-void FoodCounter()
-{
-
-}
-void Book()
-{
-
-}
 void AdminHome()
 {
 	cleardevice();
 	Window *pAHome = new Window(10,10,630,480,"Admin Home");
-	Button *t1 = new Button(75,80,100,130,"1",3);
-	Button *t2 = new Button(205,80,100,130,"2",4);
-	Button *t3 = new Button(335,80,100,130,"3",5);
-	Button *t4 = new Button(465,80,100,130,"4",6);
-	Button *t5 = new Button(75,250,100,130,"5",7);
-	Button *t6 = new Button(205,250,100,130,"6",8);
-	Button *t7 = new Button(335,250,100,130,"7",9);
-	Button *t8 = new Button(465,250,100,130,"8",10);
-	Button *t9 = new Button(510,420,100,30,"Sign Out",11);
+	Button *t1 = new Button(75,80,110,130,"Edit Timings",3);
+	Button *t2 = new Button(205,80,110,130,"Edit Price",4);
+	Button *t3 = new Button(335,80,110,130,"Edit Menu",5);
+	Button *t4 = new Button(465,80,110,130,"Now Showing",6);
+	Button *t5 = new Button(75,250,110,130,"Booking Status",7);
+	Button *t6 = new Button(205,250,110,130,"Add A User",8);
+	Button *t7 = new Button(335,250,110,130,"Book A Ticket",9);
+	Button *t8 = new Button(465,250,110,130,"About",10);
+	Button *t9 = new Button(510,420,110,30,"Sign Out",11);
 
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pAHome->Draw();
@@ -116,6 +145,18 @@ void AdminHome()
 	t7->Draw();
 	t8->Draw();
 	t9->Draw();
+/*	auto void del()
+	{
+		delete t1;
+		delete t2;
+		delete t3;
+		delete t4;
+		delete t5;
+		delete t6;
+		delete t7;
+		delete t8;
+		delete t9;
+	}                       */
 	// for(int i=1;i<=2;i++)
     // {
     // 	bwelcome[i]->Draw();
@@ -137,36 +178,101 @@ void AdminHome()
 		t9->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
-	       /*	if(ButtonId==1)
-			CustomerHome();
-		else if(ButtonId==3&&Chk==1)
-			strcpy(Movie.Timing,t1->GetText());
-		else if(ButtonId==4&&Chk==1)
-			strcpy(Movie.Timing,t2->GetText());
-		else if(ButtonId==5&&Chk==1)
-			strcpy(Movie.Timing,t3->GetText());
-		else if(ButtonId==6&&Chk==1)
-			strcpy(Movie.Timing,t4->GetText());
-		else if(ButtonId==7&&Chk==1)
-			strcpy(Movie.Timing,t5->GetText());
-		else if(ButtonId==8&&Chk==1)
-			strcpy(Movie.Timing,t6->GetText());
-		else if(ButtonId==9&&Chk==1)
-			strcpy(Movie.Timing,t7->GetText());
-		else if(ButtonId==10&&Chk==1)
-			strcpy(Movie.Timing,t8->GetText());
-		else if(ButtonId==3||ButtonId==4||ButtonId==5||ButtonId==6||ButtonId==7||ButtonId==8||ButtonId==9||ButtonId==10&&Chk==0)
+		if(ButtonId==3)
 		{
 
-			int msgBtn = msgbox.MessageBox(200,200,"Credentials Needed","Please Login to Proceed",BLUE,jcOKOnly,jcCritical);
-			if(msgBtn=jcOK)
-			{
-				Customerlogin();
-			}
-
-		}*/
+		}
+		else if(ButtonId==4)
+		{}
+		else if(ButtonId==5)
+		{}
+		else if(ButtonId==6)
+		{}
+		else if(ButtonId==7)
+		{}
+		else if(ButtonId==8)
+		{	del();
+			CustomerSignUp();
+		}
+		else if(ButtonId==9)
+		{	del();
+			CustomerHome();
+		}
+		else if(ButtonId==10)
+		{
 
 		}
+		else if(ButtonId==11)
+		{
+			del();
+			LoginStatus=0;
+			welcome();
+		}
+
+  }
+
+}
+void AdminSignUp()
+{
+	cleardevice();
+	int msgBtn = msgbox.MessageBox(200,150,"New","Welcome to The Program.         Admin Sign Up.",BLUE,jcOKOnly,jcInformation);
+	Window *pSignUpWindow = new Window(10,10,630,480,"ADMIN SIGN UP");
+	Label *page = new Label(200,70,243,30,"Administrator Sign Up",CENTER_TEXT);
+	TextBox *pname = new TextBox(200,130,243,30,"NAME",LEFT_TEXT,1);
+	TextBox *pusername = new TextBox(200,180,243,30,"USERNAME",LEFT_TEXT,2);
+	TextBox *ppassword = new TextBox(200,230,243,30,"PASSWORD",LEFT_TEXT,3);
+	TextBox *pphone = new TextBox(200,280,243,30,"PHONE NUMBER",LEFT_TEXT,4);
+	TextBox *pemail = new TextBox(200,330,243,30,"EMAIL ID",LEFT_TEXT,5);
+
+	pSignUpWindow->Draw();
+	page->Draw();
+	pname->Draw();
+	pusername->Draw();
+	ppassword->Draw();
+	pphone->Draw();
+	pemail->Draw();
+
+    //back->Draw();
+    next->Draw();
+  /*  auto void del()
+    {
+	delete page;
+	delete pname;
+	delete pusername;
+	delete ppassword;
+	delete pphone;
+	delete pemail;
+	delete next;
+    }*/
+    ADMIN Admin;
+    while(1)
+    {
+
+		Admin.inputdata(pname->GetText(),pusername->GetText(),ppassword->GetText(),pemail->GetText(),pphone->GetText());
+		mouse.ShowMouse(); // To show mouse
+		mouse.GetMouseStatus(); // To get position of mouse
+		pSignUpWindow->EnableClickHandler();
+		ppassword->EnableClickHandler();
+		pname->EnableClickHandler();
+		pusername->EnableClickHandler();
+		ppassword->HideText(true);
+		pphone->EnableClickHandler();
+		pemail->EnableClickHandler();
+
+		back->EnableClickHandler();
+		next->EnableClickHandler();
+
+		if(ButtonId==2)
+		{
+				fstream fil;
+				fil.open("admin.dat",ios::binary|ios::app);
+				fil.write((char*)&Admin,sizeof(Admin));
+				fil.close();
+				del();
+				AdminLogin();
+		}
+
+	}
 
 }
 
@@ -189,8 +295,8 @@ void AdminLogin()
 	while(1)
 	{
 		mouse.ShowMouse(); // To show mouse
-	mouse.GetMouseStatus(); // To get position of mouse
-	pLogin->EnableClickHandler();
+		mouse.GetMouseStatus(); // To get position of mouse
+		pLogin->EnableClickHandler();
 		pusername->EnableClickHandler();
 		ppassword->EnableClickHandler();
 		ppassword->HideText(true);
@@ -202,10 +308,24 @@ void AdminLogin()
 		// }
 		if(ButtonId==1)
 	    {
-	    welcome();
+		    welcome();
 	    }
 	    else if(ButtonId==2)
-		AdminHome();
+	    {
+		if(AdminCheckID(pusername->GetText(),ppassword->GetText())==1)
+		{
+			LoginStatus=2;
+			AdminHome();
+		}
+		else
+		{
+			int msgBtn = msgbox.MessageBox(200,200,"New","Incorrect Password or Username",BLUE,jcRetryCancel,jcCritical);
+				if(msgBtn=jcRetry)
+				{
+					AdminLogin();
+				}
+			}
+	    }
 	}
 }
 void CustomerHome()
@@ -224,6 +344,15 @@ void CustomerHome()
 	m3->Draw();
 	m4->Draw();
     back->Draw();
+       /*	auto void del()
+	{
+		delete m1;
+		delete m2;
+		delete m3;
+		delete m4;
+		delete back;
+		delete next;
+	} */
 	// for(int i=1;i<=2;i++)
     // {
     // 	bwelcome[i]->Draw();
@@ -238,29 +367,43 @@ void CustomerHome()
 		m3->EnableClickHandler();
 		m4->EnableClickHandler();
 		back->EnableClickHandler();
+		int chk=LoginStatus;
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)
 		{
 			strcpy(Movie.MovieName,m1->GetText());
+			del();
 			CustomerTime();
 		}
 		else if(ButtonId==4)
 		{
 			strcpy(Movie.MovieName,m2->GetText());
+			del();
 			CustomerTime();
 		}
 		else if(ButtonId==5)
 		{
 			strcpy(Movie.MovieName,m3->GetText());
+			del();
 			CustomerTime();
 		}
 		else if(ButtonId==6)
 		{
 			strcpy(Movie.MovieName,m4->GetText());
+			del();
 			CustomerTime();
 		}
+		else if(LoginStatus==0)
+		{
 
+			int msgBtn = msgbox.MessageBox(200,200,"Credentials Needed","Please Login to Proceed",BLUE,jcOKOnly,jcCritical);
+			if(msgBtn=jcOK)
+			{
+				Customerlogin();
+			}
+
+		}
 		else if(ButtonId==1&&LoginStatus==1)
 		{
 			int msgBtn = msgbox.MessageBox(200,200,"HOME","Are you sure you want to \n  Log Out",BLUE,jcYesNo,jcCritical);
@@ -270,19 +413,18 @@ void CustomerHome()
 					Customerlogin();
 
 				}
-				else{CustomerHome();}
+				else{del();CustomerHome();}
 
 		}
-		else if(ButtonId==1&&LoginStatus==0)
+		else if(ButtonId==1&&(LoginStatus==0||LoginStatus==2))
 		{
+			del();
 			welcome();
 		}
 		else
 		{
+
 		}
-
-
-
     }
 }
 void CustomerTime()
@@ -316,7 +458,6 @@ void CustomerTime()
     // }
     while(1)
     {
-		int Chk=LoginStatus;
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
@@ -333,33 +474,22 @@ void CustomerTime()
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==1)
 			CustomerHome();
-		else if(ButtonId==3&&Chk==1)
+		else if(ButtonId==3)
 			strcpy(Movie.Timing,t1->GetText());
-		else if(ButtonId==4&&Chk==1)
+		else if(ButtonId==4)
 			strcpy(Movie.Timing,t2->GetText());
-		else if(ButtonId==5&&Chk==1)
+		else if(ButtonId==5)
 			strcpy(Movie.Timing,t3->GetText());
-		else if(ButtonId==6&&Chk==1)
+		else if(ButtonId==6)
 			strcpy(Movie.Timing,t4->GetText());
-		else if(ButtonId==7&&Chk==1)
+		else if(ButtonId==7)
 			strcpy(Movie.Timing,t5->GetText());
-		else if(ButtonId==8&&Chk==1)
+		else if(ButtonId==8)
 			strcpy(Movie.Timing,t6->GetText());
-		else if(ButtonId==9&&Chk==1)
+		else if(ButtonId==9)
 			strcpy(Movie.Timing,t7->GetText());
-		else if(ButtonId==10&&Chk==1)
+		else if(ButtonId==10)
 			strcpy(Movie.Timing,t8->GetText());
-		else if(ButtonId==3||ButtonId==4||ButtonId==5||ButtonId==6||ButtonId==7||ButtonId==8||ButtonId==9||ButtonId==10&&Chk==0)
-		{
-
-			int msgBtn = msgbox.MessageBox(200,200,"Credentials Needed","Please Login to Proceed",BLUE,jcOKOnly,jcCritical);
-			if(msgBtn=jcOK)
-			{
-				Customerlogin();
-			}
-
-		}
-
 		}
 
 }
@@ -426,7 +556,7 @@ void CustomerSignUp()
 				fil.close();
 				Customerlogin();
 			}
-			
+
 		}
     }
 }
@@ -494,7 +624,7 @@ void welcome()
 	cleardevice();
 	Button *admin = new Button(200,180,243,30,"ADMIN",3);
 	Button *customer = new Button(200,220,243,30,"CUSTOMER",4);
-	Button *guest = new Button(200,260,243,30,"GUEST",5);
+	Button *guest = new Button(200,260,243,30,"NOW SHOWING",5);
 	awelcome->Draw();
 	admin->Draw();
 	guest->Draw();
@@ -514,17 +644,44 @@ void welcome()
 		guest->EnableClickHandler();
    //  	for(int i=1;i<=2;i++)
 			// bwelcome[i]->EnableClickHandler();
-		if(ButtonId==3)//Admin
+		if(ButtonId==3&&LoginStatus==0)//Admin
 			AdminLogin();
-		else if(ButtonId==4)//Customer
+		else if(ButtonId==4&&LoginStatus==0)//Customer
 			Customerlogin();
 		else if(ButtonId==5)
+			CustomerHome();
+		else if(ButtonId==3&&LoginStatus==2)
+			AdminHome();
+		else if(ButtonId==4&&LoginStatus==1)
 			CustomerHome();
 
 
     }
 }
-
+void chkadmin()
+{
+	fstream fil;
+	fil.open("Admin.dat",ios::binary|ios::in|ios::out);
+	fil.seekg(0,ios::end);
+	if(fil.tellg()==0)
+	{
+	   fil.close();
+	   setcolor(RED);
+	   rectangle(40,200,600,220);
+	   for(int i=0; i<560;i++)
+	   {
+		setcolor(WHITE);
+		rectangle(41,201,40+i,219);
+		delay(10);
+	   }
+	   AdminSignUp();
+	}
+	else
+	{
+	   fil.close();
+	   welcome();
+	}
+}
 void main()
 {
 	clrscr();
@@ -546,7 +703,7 @@ void main()
 
     while(true)
     {
-	welcome();
+	chkadmin();
 
 
 		while(kbhit())
