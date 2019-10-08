@@ -7,6 +7,7 @@ void CustomerHome();
 void AdminLogin();
 void AdminSignUp();
 void AdminHome();
+void about();
 void del()
 {}
 int CheckFile(char *username,char *password);
@@ -200,7 +201,8 @@ void AdminHome()
 		}
 		else if(ButtonId==10)
 		{
-
+			del();
+			about();
 		}
 		else if(ButtonId==11)
 		{
@@ -657,6 +659,74 @@ void welcome()
 
 
     }
+}
+void about()
+{
+	char ch;
+	Window *pAbout = new Window(10,10,630,480,"ABOUT US");
+	pAbout->Draw();
+	for(int i=100;i<=150;i++)
+	{
+		line(i,100,i,300);
+		delay(20);
+	}
+	for(int j=0;j<=50;j++)
+	{
+		line(i+j,100+j,i+j,150+j);
+		delay(20);
+	}
+	for(int k=0;k<=50;k++)
+	{
+		line(i+j+k,100+j-k,i+j+k,150+j-k);
+		delay(20);
+	}
+	for(int l=0;l<=50;l++)
+	{
+		line(i+j+k+l,100,i+j+k+l,300);
+		delay(20);
+	}
+	i+=30;
+	for(int m=0;m<=60;m++)
+	{
+		line(i+j+k+l+m,100,i+j+k+l+m,150);
+		delay(20);
+	}
+	for(int n=0;n<=50;n++)
+	{
+		line(i+j+k+l+m+n,100,i+j+k+l+m+n,300);
+		delay(20);
+	}
+	for(n=0;n<=60;n++)
+	{
+		line(i+j+k+l+m+50+n,100,i+j+k+l+m+50+n,150);
+		delay(20);
+	}
+	char text[]={'M','o','v','i','e',' ','T','i','m','e'};
+	char cred[]={'P','r','e','s','e','n','t','e','d',' ','b','y',' ','S','h','a','u','r','y','a',' ','a','n','d',' ','R','i','s','h','i','t'};
+	char t[]={"M"};
+	for(i=0;i<10;i++)
+	{
+		t[0]=text[i];
+		outtextxy(300+10*i,310,t);
+		delay(90);
+	}
+	for(j=0;j<31;j++)
+	{
+		t[0]=cred[j];
+		outtextxy(200+10*j,330,t);
+		delay(80);
+	}
+	back->Draw();
+	outtextxy(285,350,"Press Back to Return");
+	 while(1)
+	   {
+		mouse.ShowMouse(); // To show mouse
+		mouse.GetMouseStatus(); // To get position of mouse
+		pAbout->EnableClickHandler();
+		back->EnableClickHandler();
+		if(ButtonId==1)
+			AdminHome();
+	   }
 }
 void chkadmin()
 {
