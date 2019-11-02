@@ -3,14 +3,16 @@
 void welcome();
 void Customerlogin();
 void CustomerSignUp();
-
+void CustomerTime();
 void CustomerHome();
 void AdminLogin();
 void AdminSignUp();
 void AdminHome();
 void about();
-
+void SeatSelect();
 void EditMovieName();
+void EditMovieTime();
+void EditMoviePrice();
 void del()
 {}
 int CheckFile(char *username,char *password);
@@ -18,17 +20,15 @@ int AdminCheckID(char *username,char *password);
 
 class MOVIE
 {
-	char MovieName[50], Timing[4], Price[4];
 	public:
+	char MovieName[50], Timing[4], Price[4];
 	char* Mn()
 	{return MovieName;}
-	void CName(char *name);
-	void CTime(char *name);
-	void CPrice(char *name);
 	void inputname(char *name);
-	void init();
-};
+	void inputtime(char *time);
+	void inputprice(char *price);
 
+}Choice;
 class CUSTOMER
 {
 	char Password[50];
@@ -36,7 +36,7 @@ public:
 	char Username[50];
 	char Name[50], EMail[25];
 	char Phone[10];
-	char MovieName[50], Timing[4], Price[4];
+
 	//CUSTOMER(char *user,char *pass);
 	void inputdata(char *name, char *username,char *password, char *email, char *phone);
 	int CheckPassword(char *password);
@@ -92,37 +92,16 @@ Window *awelcome = new Window(10,10,630,480,"WELCOME");
 Button *back = new Button(20,400,100,30,"BACK",1);
 Button *next = new Button(500,400,100,30,"NEXT",2);
 int LoginStatus=0;
-void CustomerTime(CUSTOMER Customer);
-void SeatSelect(CUSTOMER Customer);
+
 void MOVIE::inputname(char *name)
 {
-	outtextxy(200,400,name);
-	strcpy(MovieName,name);
-	outtextxy(200,450,MovieName);
-}
-void MOVIE::init()
-{
-	fstream fil;
-	fil.open("MOV.DAT",ios::out||ios::binary);
-		MOVIE Movie[4];
-	for(int i=0;i<4;i++)
-	{
-		strcpy(Movie[i].MovieName,"");
-		strcpy(Movie[i].Timing,"");
-		strcpy(Movie[i].Price,"");
-	}
-	fil.close();
-
-}
-void MOVIE::CName(char *name)
-{
 	strcpy(MovieName,name);
 }
-void MOVIE::CTime(char *time)
+void MOVIE::inputtime(char *time)
 {
 	strcpy(Timing,time);
 }
-void MOVIE::CPrice(char *price)
+void MOVIE::inputprice(char *price)
 {
 	strcpy(Price,price);
 }
@@ -186,8 +165,24 @@ void AdminHome()
 	t7->Draw();
 	t8->Draw();
 	t9->Draw();
-	while(1)
+/*	auto void del()
 	{
+		delete t1;
+		delete t2;
+		delete t3;
+		delete t4;
+		delete t5;
+		delete t6;
+		delete t7;
+		delete t8;
+		delete t9;
+	}                       */
+	// for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
 		int Chk=LoginStatus;
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
@@ -205,11 +200,12 @@ void AdminHome()
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)
 		{
+			EditMovieTime();
 
 		}
 		else if(ButtonId==4)
 		{
-
+			EditMoviePrice();
 		}
 		else if(ButtonId==5)
 		{
@@ -264,8 +260,8 @@ void AdminSignUp()
 	pphone->Draw();
 	pemail->Draw();
 
-	//back->Draw();
-	next->Draw();
+    //back->Draw();
+    next->Draw();
   /*  auto void del()
     {
 	delete page;
@@ -275,9 +271,9 @@ void AdminSignUp()
 	delete pphone;
 	delete pemail;
 	delete next;
-	}*/
-	ADMIN Admin;
-	while(1)
+    }*/
+    ADMIN Admin;
+    while(1)
     {
 
 		Admin.inputdata(pname->GetText(),pusername->GetText(),ppassword->GetText(),pemail->GetText(),pphone->GetText());
@@ -316,9 +312,9 @@ void AdminLogin()
 	TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,1);
 	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,2);
     pusername->Draw();
-	ppassword->Draw();
-	back->Draw();
-	next->Draw();
+    ppassword->Draw();
+    back->Draw();
+    next->Draw();
 
 	// for(int i=1;i<=2;i++)
 	// {
@@ -341,8 +337,8 @@ void AdminLogin()
 		if(ButtonId==1)
 	    {
 		    welcome();
-		}
-		else if(ButtonId==2)
+	    }
+	    else if(ButtonId==2)
 	    {
 		if(AdminCheckID(pusername->GetText(),ppassword->GetText())==1)
 		{
@@ -357,34 +353,48 @@ void AdminLogin()
 					AdminLogin();
 				}
 			}
-		}
+	    }
 	}
 }
 void CustomerHome()
 {
 	cleardevice();
 	fstream fil;
-	fil.open("MOV.DAT",ios::binary|ios::in);
+	fil.open("MOVIE.DAT",ios::binary|ios::in);
 	MOVIE Movie[4];
+	MOVIE Choice;
 	fil.read((char*)&Movie[0],sizeof(Movie));
 	fil.read((char*)&Movie[1],sizeof(Movie));
 	fil.read((char*)&Movie[2],sizeof(Movie));
 	fil.read((char*)&Movie[3],sizeof(Movie));
 	Window *pAHome = new Window(10,10,630,480,"Now Playing");
-	Button *m1 = new Button(175,80,90,130,Movie[0].Mn(),3);
-	Button *m2 = new Button(305,80,90,130,Movie[1].Mn(),4);
-	Button *m3 = new Button(175,250,90,130,Movie[2].Mn(),5);
-	Button *m4 = new Button(305,250,90,130,Movie[3].Mn(),6);
+	Button *m1 = new Button(175,80,90,130,Movie[0].MovieName,3);
+	Button *m2 = new Button(305,80,90,130,Movie[1].MovieName,4);
+	Button *m3 = new Button(175,250,90,130,Movie[2].MovieName,5);
+	Button *m4 = new Button(305,250,90,130,Movie[3].MovieName,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pAHome->Draw();
 	m1->Draw();
 	m2->Draw();
 	m3->Draw();
 	m4->Draw();
-	back->Draw();
-	while(1)
+    back->Draw();
+       /*	auto void del()
 	{
-		CUSTOMER Customer;
+		delete m1;
+		delete m2;
+		delete m3;
+		delete m4;
+		delete back;
+		delete next;
+	} */
+	// for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
+
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
@@ -398,27 +408,27 @@ void CustomerHome()
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)
 		{
-			strcpy(Customer.MovieName,m1->GetText());
+			strcpy(Choice.MovieName,m1->GetText());
 			del();
-			CustomerTime(Customer);
+			CustomerTime();
 		}
 		else if(ButtonId==4)
 		{
-			strcpy(Customer.MovieName,m1->GetText());
+			strcpy(Choice.MovieName,m2->GetText());
 			del();
-			CustomerTime(Customer);
+			CustomerTime();
 		}
 		else if(ButtonId==5)
 		{
-			strcpy(Customer.MovieName,m1->GetText());
+			strcpy(Choice.MovieName,m3->GetText());
 			del();
-			CustomerTime(Customer);
+			CustomerTime();
 		}
 		else if(ButtonId==6)
 		{
-			strcpy(Customer.MovieName,m1->GetText());
+			strcpy(Choice.MovieName,m4->GetText());
 			del();
-			CustomerTime(Customer);
+			CustomerTime();
 		}
 		else if(LoginStatus==0)
 		{
@@ -442,114 +452,95 @@ void CustomerHome()
 				else{del();CustomerHome();}
 
 		}
-		else if(ButtonId==1&&(LoginStatus==0))
+		else if(ButtonId==1&&LoginStatus==2)
+		{
+			del();
+			AdminHome();
+		}
+		else if(ButtonId==1&&LoginStatus==0)
 		{
 			del();
 			welcome();
-		}
-		else if(ButtonId==1&&(LoginStatus==2))
-		{
-			AdminHome();
 		}
 		else
 		{
 
 		}
-	}
+    }
 	fil.close();
 
 }
-void CustomerTime(CUSTOMER Customer)
+void CustomerTime()
 {
 	cleardevice();
-	MOVIE Movie;
-	Window *pAHome = new Window(10,10,630,480,"Show Timings");
-	Button *t1 = new Button(130,80,100,80,"Time",3);
-	Button *t2 = new Button(235,80,100,80,"Time",4);
-	Button *t3 = new Button(340,80,100,80,"Time",5);
-	Button *t4 = new Button(130,180,100,80,"Time",6);
-	Button *t5 = new Button(235,180,100,80,"Time",7);
-	Button *t6 = new Button(340,180,100,80,"Time",8);
-	Button *t7 = new Button(130,280,100,80,"Time",9);
-	Button *t8 = new Button(235,280,100,80,"Time",10);
-
+	fstream fil;
+	fil.open("MOVIE.DAT",ios::binary|ios::in);
+	MOVIE Movie[4];
+	fil.read((char*)&Movie[0],sizeof(Movie));
+	fil.read((char*)&Movie[1],sizeof(Movie));
+	fil.read((char*)&Movie[2],sizeof(Movie));
+	fil.read((char*)&Movie[3],sizeof(Movie));
+	Window *pTime = new Window(10,10,630,480,"Time Selection");
+	Button *m1 = new Button(175,80,90,130,Movie[0].Timing,3);
+	Button *m2 = new Button(305,80,90,130,Movie[1].Timing,4);
+	Button *m3 = new Button(175,250,90,130,Movie[2].Timing,5);
+	Button *m4 = new Button(305,250,90,130,Movie[3].Timing,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
-	pAHome->Draw();
-	t1->Draw();
-	t2->Draw();
-	t3->Draw();
-	t4->Draw();
-	t5->Draw();
-	t6->Draw();
-	t7->Draw();
-	t8->Draw();
-	back->Draw();
-	// for(int i=1;i<=2;i++)
-	// {
-	// 	bwelcome[i]->Draw();
-	// }
-	while(1)
-	{
+	pTime->Draw();
+	m1->Draw();
+	m2->Draw();
+	m3->Draw();
+	m4->Draw();
+    back->Draw();
+
+    while(1)
+    {
 
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
-		t1->EnableClickHandler();
-		t2->EnableClickHandler();
-		t3->EnableClickHandler();
-		t4->EnableClickHandler();
-		t5->EnableClickHandler();
-		t6->EnableClickHandler();
-		t7->EnableClickHandler();
-		t8->EnableClickHandler();
+		m1->EnableClickHandler();
+		m2->EnableClickHandler();
+		m3->EnableClickHandler();
+		m4->EnableClickHandler();
 		back->EnableClickHandler();
-   //  	for(int i=1;i<=2;i++)
-			// bwelcome[i]->EnableClickHandler();
-		if(ButtonId==1)
-			CustomerHome();
-		else if(ButtonId==3)
+		if(ButtonId==3)
 		{
-		  //		FoodMenu();
-			strcpy(Customer.Timing,t1->GetText());
+			strcpy(Choice.Timing,m1->GetText());
+			del();
+			SeatSelect();
 		}
 		else if(ButtonId==4)
 		{
-		//	FoodMenu();
-			strcpy(Customer.Timing,t2->GetText());
+			strcpy(Choice.Timing,m2->GetText());
+			del();
+			SeatSelect();
 		}
 		else if(ButtonId==5)
 		{
-		  //	FoodMenu();
-			strcpy(Customer.Timing,t3->GetText());
+			strcpy(Choice.Timing,m3->GetText());
+			del();
+			SeatSelect();
 		}
 		else if(ButtonId==6)
 		{
-			//	FoodMenu();
-			strcpy(Customer.Timing,t4->GetText());
+			strcpy(Choice.Timing,m4->GetText());
+			del();
+			SeatSelect();
 		}
-		else if(ButtonId==7)
+		else if(ButtonId==1)
 		{
-			  //	FoodMenu();
-			strcpy(Customer.Timing,t5->GetText());
+			CustomerHome();
 		}
-		else if(ButtonId==8)
+		else
 		{
-			//FoodMenu();
-			strcpy(Customer.Timing,t6->GetText());
+
 		}
-		else if(ButtonId==9)
-		{
-			//FoodMenu();
-			strcpy(Customer.Timing,t7->GetText());
-		}
-		else if(ButtonId==10)
-		{
-			SeatSelect(Customer);
-			strcpy(Customer.Timing,t8->GetText());
-		}
-		}
+    }
+	fil.close();
 
 }
+
 void CustomerSignUp()
 {
 	cleardevice();
@@ -569,10 +560,10 @@ void CustomerSignUp()
 	pphone->Draw();
 	pemail->Draw();
 
-	back->Draw();
-	next->Draw();
-	while(1)
-	{
+    back->Draw();
+    next->Draw();
+    while(1)
+    {
 
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
@@ -615,7 +606,7 @@ void CustomerSignUp()
 			}
 
 		}
-	}
+    }
 }
 void Customerlogin()
 {
@@ -625,13 +616,13 @@ void Customerlogin()
 	pLogin->Draw();
 	TextBox *pusername = new TextBox(200,200,243,30,"USERNAME",LEFT_TEXT,2);
 	TextBox *ppassword = new TextBox(200,240,243,30,"PASSWORD",LEFT_TEXT,3);
-	pusername->Draw();
-	ppassword->Draw();
-	pCustomerSignUp->Draw();
-	back->Draw();
-	next->Draw();
+    pusername->Draw();
+    ppassword->Draw();
+    pCustomerSignUp->Draw();
+    back->Draw();
+    next->Draw();
 
-	while(1)
+    while(1)
 	{
 		CUSTOMER Customer;
 		mouse.ShowMouse(); // To show mouse
@@ -648,11 +639,11 @@ void Customerlogin()
 		// 	standard[i]->EnableClickHandler();
 		// }
 		if(ButtonId==1)
-		{
-		welcome();
-		}
-		if(ButtonId==2)
-		{
+	    {
+	    welcome();
+	    }
+	    if(ButtonId==2)
+	    {
 			if(CheckFile(pusername->GetText(),ppassword->GetText())==1)
 			{
 				LoginStatus=1;
@@ -667,11 +658,11 @@ void Customerlogin()
 					}
 			}
 
-		}
-		if(ButtonId==5)
-		{
+	    }
+	    if(ButtonId==5)
+	    {
 		CustomerSignUp();
-		}
+	    }
 	}
 
 
@@ -687,12 +678,12 @@ void welcome()
 	guest->Draw();
 	customer->Draw();
 
-	// for(int i=1;i<=2;i++)
-	// {
-	// 	bwelcome[i]->Draw();
-	// }
-	while(1)
-	{
+    // for(int i=1;i<=2;i++)
+    // {
+    // 	bwelcome[i]->Draw();
+    // }
+    while(1)
+    {
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
@@ -713,9 +704,9 @@ void welcome()
 			CustomerHome();
 
 
-	}
+    }
 }
-void CustConfirm(CUSTOMER Customer)
+void CustConfirm()
 {
 	cleardevice();
 	Window *pConfirm = new Window(10,10,630,480,"CONFIRM BOOKING");
@@ -723,7 +714,7 @@ void CustConfirm(CUSTOMER Customer)
 	back->Draw();
 	next->Draw();
 
-	while(1)
+    while(1)
 	{
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
@@ -732,17 +723,17 @@ void CustConfirm(CUSTOMER Customer)
 		next->EnableClickHandler();
 		if(ButtonId==1)
 		{
-			SeatSelect(Customer);
+			SeatSelect();
 		}
 		if(ButtonId==2)
 		{
-			CustConfirm(Customer);
+			CustConfirm();
 		}
 
 	 }
 
 }
-void SeatSelect(CUSTOMER Customer)
+void SeatSelect()
 {
 	cleardevice();
 	Window *pSeat = new Window(10,10,630,480,"SELECT SEATS");
@@ -750,7 +741,7 @@ void SeatSelect(CUSTOMER Customer)
 	back->Draw();
 	next->Draw();
 
-	while(1)
+    while(1)
 	{
 		mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
@@ -759,11 +750,11 @@ void SeatSelect(CUSTOMER Customer)
 		next->EnableClickHandler();
 		if(ButtonId==1)
 		{
-			CustomerTime(Customer);
+			CustomerTime();
 		}
-		if(ButtonId==2)
-		{
-		CustConfirm(Customer);
+	    if(ButtonId==2)
+	    {
+		CustConfirm();
 	    }
 
 	 }
@@ -786,18 +777,19 @@ void EditMovieName()
 	m3->Draw();
 	m4->Draw();
 
-	back->Draw();
-	next->Draw();
-	while(1)
-	{
-	fstream fil;
-	fil.open("MOV.DAT",ios::binary|ios::out|ios::in);
+    back->Draw();
+    next->Draw();
+    fstream fil;
+    while(1)
+    {
+
+	fil.open("MOVIE.DAT",ios::binary|ios::in);
 	MOVIE Movie[4];
-	Movie->init();
 	fil.read((char*)&Movie[0],sizeof(Movie));
 	fil.read((char*)&Movie[1],sizeof(Movie));
 	fil.read((char*)&Movie[2],sizeof(Movie));
 	fil.read((char*)&Movie[3],sizeof(Movie));
+	fil.close();
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 	pEditMName->EnableClickHandler();
@@ -817,7 +809,8 @@ void EditMovieName()
 
 		if(ButtonId==2)
 		{
-				fil.seekg(0);
+				fil.open("MOVIE.DAT",ios::binary|ios::out);
+				fil.seekg(0,ios::beg);
 				fil.write((char*)&Movie[0],sizeof(Movie));
 				fil.write((char*)&Movie[1],sizeof(Movie));
 				fil.write((char*)&Movie[2],sizeof(Movie));
@@ -825,10 +818,11 @@ void EditMovieName()
 				fil.close();
 				del();
 				AdminHome();
-		}
+
+			}
 		else if(ButtonId==1)
 		{
-			fil.close();
+
 			AdminHome();
 		}
 
@@ -837,6 +831,148 @@ void EditMovieName()
 
 }
 
+void EditMovieTime()
+{
+	cleardevice();
+	Window *pEditMTime = new Window(10,10,630,480,"EDIT MOVIE TIME");
+	Label *page = new Label(200,70,243,30,"Edit Movie Time",CENTER_TEXT);
+	pEditMTime->Draw();
+	page->Draw();
+	TextBox *m1 = new TextBox(200,130,243,30,"Movie 1 Timing",LEFT_TEXT,1);
+	TextBox *m2 = new TextBox(200,180,243,30,"Movie 2 Timing",LEFT_TEXT,2);
+	TextBox *m3 = new TextBox(200,230,243,30,"Movie 3 Timing",LEFT_TEXT,3);
+	TextBox *m4 = new TextBox(200,280,243,30,"Movie 4 Timing",LEFT_TEXT,4);
+	pEditMTime->Draw();
+	page->Draw();
+	m1->Draw();
+	m2->Draw();
+	m3->Draw();
+	m4->Draw();
+
+    back->Draw();
+    next->Draw();
+    fstream fil;
+    while(1)
+    {
+
+	fil.open("MOVIE.DAT",ios::binary|ios::in);
+	MOVIE Movie[4];
+	fil.read((char*)&Movie[0],sizeof(Movie));
+	fil.read((char*)&Movie[1],sizeof(Movie));
+	fil.read((char*)&Movie[2],sizeof(Movie));
+	fil.read((char*)&Movie[3],sizeof(Movie));
+	fil.close();
+	mouse.ShowMouse(); // To show mouse
+	mouse.GetMouseStatus(); // To get position of mouse
+	pEditMTime->EnableClickHandler();
+	m1->EnableClickHandler();
+	m2->EnableClickHandler();
+	m3->EnableClickHandler();
+	m4->EnableClickHandler();
+	back->EnableClickHandler();
+	next->EnableClickHandler();
+	//while(fil.read((char*)&Movie,sizeof(Movie)))
+	//{
+	Movie[0].inputtime(m1->GetText());
+	Movie[1].inputtime(m2->GetText());
+	Movie[2].inputtime(m3->GetText());
+	Movie[3].inputtime(m4->GetText());
+	//}
+
+		if(ButtonId==2)
+		{
+				fil.open("MOVIE.DAT",ios::binary|ios::out);
+				fil.seekg(0,ios::beg);
+				fil.write((char*)&Movie[0],sizeof(Movie));
+				fil.write((char*)&Movie[1],sizeof(Movie));
+				fil.write((char*)&Movie[2],sizeof(Movie));
+				fil.write((char*)&Movie[3],sizeof(Movie));
+				fil.close();
+				del();
+				AdminHome();
+
+			}
+		else if(ButtonId==1)
+		{
+
+			AdminHome();
+		}
+
+	}
+	//getch();
+
+}
+void EditMoviePrice()
+{
+	cleardevice();
+	Window *pEditMPrice = new Window(10,10,630,480,"EDIT MOVIE PRICE");
+	Label *page = new Label(200,70,243,30,"Edit Movie Price",CENTER_TEXT);
+	pEditMPrice->Draw();
+	page->Draw();
+	TextBox *m1 = new TextBox(200,130,243,30,"Movie 1 Price",LEFT_TEXT,1);
+	TextBox *m2 = new TextBox(200,180,243,30,"Movie 2 Price",LEFT_TEXT,2);
+	TextBox *m3 = new TextBox(200,230,243,30,"Movie 3 Price",LEFT_TEXT,3);
+	TextBox *m4 = new TextBox(200,280,243,30,"Movie 4 Price",LEFT_TEXT,4);
+	pEditMPrice->Draw();
+	page->Draw();
+	m1->Draw();
+	m2->Draw();
+	m3->Draw();
+	m4->Draw();
+
+    back->Draw();
+    next->Draw();
+    fstream fil;
+    while(1)
+    {
+
+	fil.open("MOVIE.DAT",ios::binary|ios::in);
+	MOVIE Movie[4];
+	fil.read((char*)&Movie[0],sizeof(Movie));
+	fil.read((char*)&Movie[1],sizeof(Movie));
+	fil.read((char*)&Movie[2],sizeof(Movie));
+	fil.read((char*)&Movie[3],sizeof(Movie));
+	fil.close();
+	mouse.ShowMouse(); // To show mouse
+	mouse.GetMouseStatus(); // To get position of mouse
+	pEditMPrice->EnableClickHandler();
+	m1->EnableClickHandler();
+	m2->EnableClickHandler();
+	m3->EnableClickHandler();
+	m4->EnableClickHandler();
+	back->EnableClickHandler();
+	next->EnableClickHandler();
+	//while(fil.read((char*)&Movie,sizeof(Movie)))
+	//{
+	Movie[0].inputprice(m1->GetText());
+	Movie[1].inputprice(m2->GetText());
+	Movie[2].inputprice(m3->GetText());
+	Movie[3].inputprice(m4->GetText());
+	//}
+
+		if(ButtonId==2)
+		{
+				fil.open("MOVIE.DAT",ios::binary|ios::out);
+				fil.seekg(0,ios::beg);
+				fil.write((char*)&Movie[0],sizeof(Movie));
+				fil.write((char*)&Movie[1],sizeof(Movie));
+				fil.write((char*)&Movie[2],sizeof(Movie));
+				fil.write((char*)&Movie[3],sizeof(Movie));
+				fil.close();
+				del();
+				AdminHome();
+
+			}
+		else if(ButtonId==1)
+		{
+
+			AdminHome();
+		}
+
+	}
+	//getch();
+
+}
 
 void about()
 {
@@ -950,8 +1086,8 @@ void main()
 		}
 
 
-	while(true)
-	{
+    while(true)
+    {
 	chkadmin();
 
 
@@ -961,7 +1097,7 @@ void main()
 		 if(ch==27)
 		  exit(0);
 		}
-	}
-	getch();
+    }
+    getch();
 
 }
