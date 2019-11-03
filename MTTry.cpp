@@ -362,7 +362,7 @@ void CustomerHome()
 	fstream fil;
 	fil.open("MOVIE.DAT",ios::binary|ios::in);
 	MOVIE Movie[4];
-	MOVIE Choice;
+	//MOVIE Choice;
 	fil.read((char*)&Movie[0],sizeof(Movie));
 	fil.read((char*)&Movie[1],sizeof(Movie));
 	fil.read((char*)&Movie[2],sizeof(Movie));
@@ -408,25 +408,25 @@ void CustomerHome()
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)
 		{
-			strcpy(Choice.MovieName,m1->GetText());
+			strcpy(Choice.MovieName,Movie[0].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==4)
 		{
-			strcpy(Choice.MovieName,m2->GetText());
+			strcpy(Choice.MovieName,Movie[1].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==5)
 		{
-			strcpy(Choice.MovieName,m3->GetText());
+			strcpy(Choice.MovieName,Movie[2].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==6)
 		{
-			strcpy(Choice.MovieName,m4->GetText());
+			strcpy(Choice.MovieName,Movie[3].MovieName);
 			del();
 			CustomerTime();
 		}
@@ -506,25 +506,25 @@ void CustomerTime()
 		back->EnableClickHandler();
 		if(ButtonId==3)
 		{
-			strcpy(Choice.Timing,m1->GetText());
+			strcpy(Choice.Timing,Movie[0].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==4)
 		{
-			strcpy(Choice.Timing,m2->GetText());
+			strcpy(Choice.Timing,Movie[1].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==5)
 		{
-			strcpy(Choice.Timing,m3->GetText());
+			strcpy(Choice.Timing,Movie[2].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==6)
 		{
-			strcpy(Choice.Timing,m4->GetText());
+			strcpy(Choice.Timing,Movie[3].Timing);
 			del();
 			SeatSelect();
 		}
