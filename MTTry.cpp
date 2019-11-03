@@ -397,7 +397,7 @@ void CustomerHome()
 
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
-		awelcome->EnableClickHandler();
+		pAHome->EnableClickHandler();
 		m1->EnableClickHandler();
 		m2->EnableClickHandler();
 		m3->EnableClickHandler();
@@ -408,25 +408,25 @@ void CustomerHome()
 			// bwelcome[i]->EnableClickHandler();
 		if(ButtonId==3)
 		{
-			strcpy(Choice.MovieName,Movie[0].MovieName);
+		//	strcpy(Choice.MovieName,Movie[0].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==4)
 		{
-			strcpy(Choice.MovieName,Movie[1].MovieName);
+			//strcpy(Choice.MovieName,Movie[1].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==5)
 		{
-			strcpy(Choice.MovieName,Movie[2].MovieName);
+			//strcpy(Choice.MovieName,Movie[2].MovieName);
 			del();
 			CustomerTime();
 		}
 		else if(ButtonId==6)
 		{
-			strcpy(Choice.MovieName,Movie[3].MovieName);
+			//strcpy(Choice.MovieName,Movie[3].MovieName);
 			del();
 			CustomerTime();
 		}
@@ -481,16 +481,16 @@ void CustomerTime()
 	fil.read((char*)&Movie[2],sizeof(Movie));
 	fil.read((char*)&Movie[3],sizeof(Movie));
 	Window *pTime = new Window(10,10,630,480,"Time Selection");
-	Button *m1 = new Button(175,80,90,130,Movie[0].Timing,3);
-	Button *m2 = new Button(305,80,90,130,Movie[1].Timing,4);
-	Button *m3 = new Button(175,250,90,130,Movie[2].Timing,5);
-	Button *m4 = new Button(305,250,90,130,Movie[3].Timing,6);
+	Button *t1 = new Button(175,80,90,130,Movie[0].Timing,3);
+	Button *t2 = new Button(305,80,90,130,Movie[1].Timing,4);
+	Button *t3 = new Button(175,250,90,130,Movie[2].Timing,5);
+	Button *t4 = new Button(305,250,90,130,Movie[3].Timing,6);
 	//Button *home = new Button(20,400,100,30,"Home",LEFT_TEXT,7);
 	pTime->Draw();
-	m1->Draw();
-	m2->Draw();
-	m3->Draw();
-	m4->Draw();
+	t1->Draw();
+	t2->Draw();
+	t3->Draw();
+	t4->Draw();
     back->Draw();
 
     while(1)
@@ -499,32 +499,32 @@ void CustomerTime()
 		mouse.ShowMouse(); // To show mouse
 		mouse.GetMouseStatus(); // To get position of mouse
 		awelcome->EnableClickHandler();
-		m1->EnableClickHandler();
-		m2->EnableClickHandler();
-		m3->EnableClickHandler();
-		m4->EnableClickHandler();
+		t1->EnableClickHandler();
+		t2->EnableClickHandler();
+		t3->EnableClickHandler();
+		t4->EnableClickHandler();
 		back->EnableClickHandler();
 		if(ButtonId==3)
 		{
-			strcpy(Choice.Timing,Movie[0].Timing);
+	//		strcpy(Choice.Timing,Movie[0].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==4)
 		{
-			strcpy(Choice.Timing,Movie[1].Timing);
+		//	strcpy(Choice.Timing,Movie[1].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==5)
 		{
-			strcpy(Choice.Timing,Movie[2].Timing);
+			//strcpy(Choice.Timing,Movie[2].Timing);
 			del();
 			SeatSelect();
 		}
 		else if(ButtonId==6)
 		{
-			strcpy(Choice.Timing,Movie[3].Timing);
+			//strcpy(Choice.Timing,Movie[3].Timing);
 			del();
 			SeatSelect();
 		}
@@ -766,16 +766,16 @@ void EditMovieName()
 	Label *page = new Label(200,70,243,30,"Edit Movie Name",CENTER_TEXT);
 	pEditMName->Draw();
 	page->Draw();
-	TextBox *m1 = new TextBox(200,130,243,30,"Movie 1",LEFT_TEXT,1);
-	TextBox *m2 = new TextBox(200,180,243,30,"Movie 2",LEFT_TEXT,2);
-	TextBox *m3 = new TextBox(200,230,243,30,"Movie 3",LEFT_TEXT,3);
-	TextBox *m4 = new TextBox(200,280,243,30,"Movie 4",LEFT_TEXT,4);
+	TextBox *mn1 = new TextBox(200,130,243,30,"Movie 1",LEFT_TEXT,1);
+	TextBox *mn2 = new TextBox(200,180,243,30,"Movie 2",LEFT_TEXT,2);
+	TextBox *mn3 = new TextBox(200,230,243,30,"Movie 3",LEFT_TEXT,3);
+	TextBox *mn4 = new TextBox(200,280,243,30,"Movie 4",LEFT_TEXT,4);
 	pEditMName->Draw();
 	page->Draw();
-	m1->Draw();
-	m2->Draw();
-	m3->Draw();
-	m4->Draw();
+	mn1->Draw();
+	mn2->Draw();
+	mn3->Draw();
+	mn4->Draw();
 
     back->Draw();
     next->Draw();
@@ -793,18 +793,18 @@ void EditMovieName()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 	pEditMName->EnableClickHandler();
-	m1->EnableClickHandler();
-	m2->EnableClickHandler();
-	m3->EnableClickHandler();
-	m4->EnableClickHandler();
+	mn1->EnableClickHandler();
+	mn2->EnableClickHandler();
+	mn3->EnableClickHandler();
+	mn4->EnableClickHandler();
 	back->EnableClickHandler();
 	next->EnableClickHandler();
 	//while(fil.read((char*)&Movie,sizeof(Movie)))
 	//{
-	Movie[0].inputname(m1->GetText());
-	Movie[1].inputname(m2->GetText());
-	Movie[2].inputname(m3->GetText());
-	Movie[3].inputname(m4->GetText());
+	Movie[0].inputname(mn1->GetText());
+	Movie[1].inputname(mn2->GetText());
+	Movie[2].inputname(mn3->GetText());
+	Movie[3].inputname(mn4->GetText());
 	//}
 
 		if(ButtonId==2)
@@ -838,16 +838,16 @@ void EditMovieTime()
 	Label *page = new Label(200,70,243,30,"Edit Movie Time",CENTER_TEXT);
 	pEditMTime->Draw();
 	page->Draw();
-	TextBox *m1 = new TextBox(200,130,243,30,"Movie 1 Timing",LEFT_TEXT,1);
-	TextBox *m2 = new TextBox(200,180,243,30,"Movie 2 Timing",LEFT_TEXT,2);
-	TextBox *m3 = new TextBox(200,230,243,30,"Movie 3 Timing",LEFT_TEXT,3);
-	TextBox *m4 = new TextBox(200,280,243,30,"Movie 4 Timing",LEFT_TEXT,4);
+	TextBox *mt1 = new TextBox(200,130,243,30,"Movie 1 Timing",LEFT_TEXT,1);
+	TextBox *mt2 = new TextBox(200,180,243,30,"Movie 2 Timing",LEFT_TEXT,2);
+	TextBox *mt3 = new TextBox(200,230,243,30,"Movie 3 Timing",LEFT_TEXT,3);
+	TextBox *mt4 = new TextBox(200,280,243,30,"Movie 4 Timing",LEFT_TEXT,4);
 	pEditMTime->Draw();
 	page->Draw();
-	m1->Draw();
-	m2->Draw();
-	m3->Draw();
-	m4->Draw();
+	mt1->Draw();
+	mt2->Draw();
+	mt3->Draw();
+	mt4->Draw();
 
     back->Draw();
     next->Draw();
@@ -865,18 +865,18 @@ void EditMovieTime()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 	pEditMTime->EnableClickHandler();
-	m1->EnableClickHandler();
-	m2->EnableClickHandler();
-	m3->EnableClickHandler();
-	m4->EnableClickHandler();
+	mt1->EnableClickHandler();
+	mt2->EnableClickHandler();
+	mt3->EnableClickHandler();
+	mt4->EnableClickHandler();
 	back->EnableClickHandler();
 	next->EnableClickHandler();
 	//while(fil.read((char*)&Movie,sizeof(Movie)))
 	//{
-	Movie[0].inputtime(m1->GetText());
-	Movie[1].inputtime(m2->GetText());
-	Movie[2].inputtime(m3->GetText());
-	Movie[3].inputtime(m4->GetText());
+	Movie[0].inputtime(mt1->GetText());
+	Movie[1].inputtime(mt2->GetText());
+	Movie[2].inputtime(mt3->GetText());
+	Movie[3].inputtime(mt4->GetText());
 	//}
 
 		if(ButtonId==2)
@@ -909,16 +909,16 @@ void EditMoviePrice()
 	Label *page = new Label(200,70,243,30,"Edit Movie Price",CENTER_TEXT);
 	pEditMPrice->Draw();
 	page->Draw();
-	TextBox *m1 = new TextBox(200,130,243,30,"Movie 1 Price",LEFT_TEXT,1);
-	TextBox *m2 = new TextBox(200,180,243,30,"Movie 2 Price",LEFT_TEXT,2);
-	TextBox *m3 = new TextBox(200,230,243,30,"Movie 3 Price",LEFT_TEXT,3);
-	TextBox *m4 = new TextBox(200,280,243,30,"Movie 4 Price",LEFT_TEXT,4);
+	TextBox *mp1 = new TextBox(200,130,243,30,"Movie 1 Price",LEFT_TEXT,1);
+	TextBox *mp2 = new TextBox(200,180,243,30,"Movie 2 Price",LEFT_TEXT,2);
+	TextBox *mp3 = new TextBox(200,230,243,30,"Movie 3 Price",LEFT_TEXT,3);
+	TextBox *mp4 = new TextBox(200,280,243,30,"Movie 4 Price",LEFT_TEXT,4);
 	pEditMPrice->Draw();
 	page->Draw();
-	m1->Draw();
-	m2->Draw();
-	m3->Draw();
-	m4->Draw();
+	mp1->Draw();
+	mp2->Draw();
+	mp3->Draw();
+	mp4->Draw();
 
     back->Draw();
     next->Draw();
@@ -936,18 +936,18 @@ void EditMoviePrice()
 	mouse.ShowMouse(); // To show mouse
 	mouse.GetMouseStatus(); // To get position of mouse
 	pEditMPrice->EnableClickHandler();
-	m1->EnableClickHandler();
-	m2->EnableClickHandler();
-	m3->EnableClickHandler();
-	m4->EnableClickHandler();
+	mp1->EnableClickHandler();
+	mp2->EnableClickHandler();
+	mp3->EnableClickHandler();
+	mp4->EnableClickHandler();
 	back->EnableClickHandler();
 	next->EnableClickHandler();
 	//while(fil.read((char*)&Movie,sizeof(Movie)))
 	//{
-	Movie[0].inputprice(m1->GetText());
-	Movie[1].inputprice(m2->GetText());
-	Movie[2].inputprice(m3->GetText());
-	Movie[3].inputprice(m4->GetText());
+	Movie[0].inputprice(mp1->GetText());
+	Movie[1].inputprice(mp2->GetText());
+	Movie[2].inputprice(mp3->GetText());
+	Movie[3].inputprice(mp4->GetText());
 	//}
 
 		if(ButtonId==2)
