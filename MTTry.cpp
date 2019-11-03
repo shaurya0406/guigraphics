@@ -763,15 +763,13 @@ void EditMovieName()
 {
 	cleardevice();
 	Window *pEditMName = new Window(10,10,630,480,"EDIT MOVIE NAME");
-	Label *page = new Label(200,70,243,30,"Edit Movie Name",CENTER_TEXT);
+	Label *NamePage = new Label(200,70,243,30,"Edit Movie Name",CENTER_TEXT);
 	pEditMName->Draw();
-	page->Draw();
+	NamePage->Draw();
 	TextBox *mn1 = new TextBox(200,130,243,30,"Movie 1",LEFT_TEXT,1);
 	TextBox *mn2 = new TextBox(200,180,243,30,"Movie 2",LEFT_TEXT,2);
 	TextBox *mn3 = new TextBox(200,230,243,30,"Movie 3",LEFT_TEXT,3);
 	TextBox *mn4 = new TextBox(200,280,243,30,"Movie 4",LEFT_TEXT,4);
-	pEditMName->Draw();
-	page->Draw();
 	mn1->Draw();
 	mn2->Draw();
 	mn3->Draw();
@@ -835,15 +833,13 @@ void EditMovieTime()
 {
 	cleardevice();
 	Window *pEditMTime = new Window(10,10,630,480,"EDIT MOVIE TIME");
-	Label *page = new Label(200,70,243,30,"Edit Movie Time",CENTER_TEXT);
+	Label *TimePage = new Label(200,70,243,30,"Edit Movie Time",CENTER_TEXT);
 	pEditMTime->Draw();
-	page->Draw();
+	TimePage->Draw();
 	TextBox *mt1 = new TextBox(200,130,243,30,"Movie 1 Timing",LEFT_TEXT,1);
 	TextBox *mt2 = new TextBox(200,180,243,30,"Movie 2 Timing",LEFT_TEXT,2);
 	TextBox *mt3 = new TextBox(200,230,243,30,"Movie 3 Timing",LEFT_TEXT,3);
 	TextBox *mt4 = new TextBox(200,280,243,30,"Movie 4 Timing",LEFT_TEXT,4);
-	pEditMTime->Draw();
-	page->Draw();
 	mt1->Draw();
 	mt2->Draw();
 	mt3->Draw();
@@ -906,15 +902,13 @@ void EditMoviePrice()
 {
 	cleardevice();
 	Window *pEditMPrice = new Window(10,10,630,480,"EDIT MOVIE PRICE");
-	Label *page = new Label(200,70,243,30,"Edit Movie Price",CENTER_TEXT);
+	Label *PricePage = new Label(200,70,243,30,"Edit Movie Price",CENTER_TEXT);
 	pEditMPrice->Draw();
-	page->Draw();
+	PricePage->Draw();
 	TextBox *mp1 = new TextBox(200,130,243,30,"Movie 1 Price",LEFT_TEXT,1);
 	TextBox *mp2 = new TextBox(200,180,243,30,"Movie 2 Price",LEFT_TEXT,2);
 	TextBox *mp3 = new TextBox(200,230,243,30,"Movie 3 Price",LEFT_TEXT,3);
 	TextBox *mp4 = new TextBox(200,280,243,30,"Movie 4 Price",LEFT_TEXT,4);
-	pEditMPrice->Draw();
-	page->Draw();
 	mp1->Draw();
 	mp2->Draw();
 	mp3->Draw();
